@@ -1,8 +1,8 @@
 <h3>Kā palaist mājaslapu</h3>
 
-1. Lai pievienotu DB tabulas
- - <b>php artisan migrate</b>
-2. Pievieno lietotāju DB ar administrātora provilēģijām un iestatījumus
- - <b>php artisan db:seed</b>
+1. Jāmigrē DB tabulas
+<pre>php artisan migrate</pre>
+2. Jāpievieno lietotāju DB ar administrātora provilēģijām un iestatījumus
+<pre>php artisan db:seed</pre>
 
 Default lietotājvārds: game@etr.lv, parole: password
