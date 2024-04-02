@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\User;
+use App\Models\User;
+use App\Models\Game;
 //use App\Conection;
-use App\Game;
 use Socialite;
 use Validator;
 use Illuminate\Support\Str;
@@ -37,8 +37,8 @@ class PageController extends Controller
             'email' => $request->get('email'),
             'comment' => $request->get('comment') ],
             function ($message) {
-                    $message->from('buhality@etr.lv', 'Buhality');
-                    $message->to('buhality@etr.lv', 'Buhality')
+                    $message->from('game@etr.lv', 'Buhality');
+                    $message->to('game@etr.lv', 'Buhality')
                             ->subject('Buhality kontaktu forma');
         });
 

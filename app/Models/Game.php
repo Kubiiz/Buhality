@@ -9,10 +9,15 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'count', 'bomba', 'shots', 'members', 'active'];
+    protected $fillable = ['title', 'count', 'bomba', 'active'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function player()
+    {
+        return $this->hasMany(Player::class);
     }
 }
