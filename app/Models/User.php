@@ -18,9 +18,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'surname',
         'email',
         'password',
+        'group',
     ];
 
     /**
@@ -45,14 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function apartment()
+    
+    public function game()
     {
-        return $this->hasMany(Apartment::class, 'owner');
-    }
-
-    public function hasPermission($permission)
-    {
-        return Permission::check('user', $this->id, $permission);
+        return $this->hasMany(Game::class);
     }
 }
