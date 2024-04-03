@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ConnectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('dashboard');
@@ -25,5 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('auth/{provider}', [ConnectionController::class, 'redirectToProvider']);
+Route::get('auth/{provider}/callback', [ConnectionController::class, 'handleProviderCallback']);
 
 require __DIR__.'/auth.php';
