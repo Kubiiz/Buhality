@@ -7,9 +7,10 @@ use App\Http\Controllers\ConnectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('dashboard');
+Route::get('/test', [PageController::class, 'test'])->name('test');
 
-Route::get('new-game', [PageController::class, 'create'])->middleware('auth');
-Route::post('new-game', [PageController::class, 'store'])->middleware('auth');
+Route::get('new-game', [GameController::class, 'create'])->middleware('auth');
+Route::post('new-game', [GameController::class, 'store'])->middleware('auth');
 
 Route::get('game', [GameController::class, 'index'])->middleware('auth');
 Route::get('game/run', [GameController::class, 'game'])->middleware('auth');

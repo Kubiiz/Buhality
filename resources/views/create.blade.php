@@ -7,13 +7,13 @@
         <div class="form-group head">
             <i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle
         </div>
-        @if(count(Auth::user()->game->where('active', 0)) > 0)
+        @if($count > 0)
             <div class="form-group">
                 <div class="alert alert-info">
                     Tev ir nepabeigta spēle!
                     <div class="pull-right warning">
                         <a href="{{ url('/game') }}" class="btn btn-sm btn-success"><i class="fa fa-play"></i> Turpināt</a>
-                        <a href="{{ url('/game/stop') }}" class="btn btn-sm btn-danger"><i class="fa fa-stop"></i>&nbsp; Beigt</a>
+                        <a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}" class="btn btn-sm btn-danger"><i class="fa fa-stop"></i>&nbsp; Beigt</a>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <label class="col-sm-3">Nosaukums</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="title" value="{{ old('title') }}">
-                <small>Piemēram - <i>"Piektdienas buha"</i></small>
+                <small>Piemēram - <i>"Piektdienas ballīte"</i></small>
 
                 @if ($errors->has('title'))
                     <span class="help-block">

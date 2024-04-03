@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Game::class);
             $table->string('name');
-            $table->integer('count')->nullable();
-            $table->integer('shots')->nullable();
+            $table->integer('count')->default(0);
+            $table->integer('shots')->default(0);
             $table->timestamps();
         });
     }

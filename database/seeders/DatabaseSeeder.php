@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
                 'inc_all' => 10,
                 'noone' => 10,
                 'dec_one' =>20,
-                'bomba' => 1,
+                'bomb' => 1,
             ]), // Default percentages of random numbers how the game will work
         ]);
     }

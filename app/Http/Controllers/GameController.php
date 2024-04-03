@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use App\Models\Game;
+use App\Models\Game;
+use App\Models\Player;
 use Auth;
 use Validator;
 
@@ -11,53 +12,83 @@ class GameController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('auth');
+
     }
 
+    // Checks if a game is active and starts the game
     public function index()
     {
-        $data = Auth::user()->game->where('active', 0)->first();
+        $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (count((array)$data) == 0)
+        // If there is no active game, redirect to new-game page
+        if (empty($data))
             return redirect('new-game');
 
-        $members = unserialize($data->members);
+        $members = $data->player()->get();
 
         return view('game.index', compact('data', 'members'));
     }
 
-    /*
-        1 = Pieskaita +1, 44%
-        2 = Pieskaita +2, 15%
-        4 = Pieskaita visiem +1, 10%
-        5 = Neviens, 10%
-        -1 = Atņem -1, 20%
+    // Create new-game page
+    public function create()
+    {
+        $count = Auth::user()->game->where('ended', null)->count();
 
-        b (3) = dzer visi, 1%
-    */
+        return view('create', compact('count'));
+    }
 
-    public function random($b){
-        $random = [
-            1,1,-1,2,1,4,-1,5,1,1,-1,1,2,-1,1,5,1,2,1,4,
-            1,1,-1,2,1,4,-1,5,1,1,-1,1,2,-1,1,5,1,2,4,
-            1,1,-1,2,1,4,-1,5,1,$b,-1,1,2,-1,1,5,1,2,1,4,
-            1,1,-1,2,1,4,-1,5,1,1,-1,1,2,-1,1,5,1,2,1,4,
-            1,1,-1,2,1,4,-1,5,1,1,-1,1,2,-1,1,5,1,2,1,4
-        ];
-
-        $rand = array_rand($random);
-
-        if ($random[$rand] == 3) {
-            $randbomb = [1,1,1,3,1,1,1];
-
-            $rands = array_rand($randbomb);
-
-            $return = $randbomb[$rands];
-        } else {
-            $return = $random[$rand];
+    // Creating new game
+    public function store(Request $request)
+    {
+        // Validate requests
+        if (is_array($request['d'])) {
+            if (count($request['d']) < 2) {
+                $fields['d'] = '';
+                $rules['d'] = 'required';
+            }
+            else
+                foreach ($request['d'] as $key => $d) {
+                    $fields['d' . $key] = $d;
+                    $rules['d' . $key] = 'required|min:3';
+                }
+        }
+        else {
+            $fields['d'] = '';
+            $rules['d'] = 'required';
         }
 
-        return $return;
+        $fields['title'] = $request['title'];
+        $rules['title'] = 'required|min:3|max:20';
+        $fields['n'] = $request['n'];
+        $rules['n'] = 'required|numeric|min:3|max:15';
+
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // Complete previous games if exists
+        Game::where('user_id', Auth::user()->id)->update([
+            'ended'      => 1
+        ]);
+
+        // Create new game
+        $insert = Auth::user()->game()->create([
+            'title'     => $request['title'],
+            'count'     => $request['n'],
+            'bomba'     => $request['bomba'] ? 1 : null,
+        ]);
+
+        // Add game players
+        foreach ($request['d'] as $key => $d) {
+            Player::create([
+                'game_id'   => $insert->id,
+                'name'      => $d,
+            ]);
+        }
+
+        return redirect('game');
     }
 
     public function bomba($data)
@@ -153,7 +184,7 @@ class GameController extends Controller
     public function stop()
     {
         Game::where('user_id', Auth::user()->id)->update([
-            'active'      => 1
+            'ended'      => 1
         ]);
 
         return back();
