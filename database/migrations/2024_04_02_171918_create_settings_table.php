@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('app_name');
             $table->string('description');
             $table->string('keywords');
-            $table->integer('bomba');
+            $table->string('random');
             $table->integer('age');
             $table->foreignIdFor(User::class, 'editor')->nullable();
             $table->timestamps();

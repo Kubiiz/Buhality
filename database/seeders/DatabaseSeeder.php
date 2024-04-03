@@ -18,20 +18,26 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'game@etr.lv',
             'password' => bcrypt('password'),
-            'group' => 1,
+            'group' => 1, // 1-admin
         ]);
 
         /**
          * Create settings seeder
-         *
          * Later can be edited in admin panel
          */
         Settings::create([
             'app_name' => 'TestApp', // Page title in browser
             'description' => 'Party drinking game', // Page description in meta tags
             'keywords' => 'game, drink, fun', // Page keywords in meta tags
-            'bomba' => 1, // Allow users to choose a Bomba when all players are drinking
-            'age' => 18, // Minimal drinking age
+            'age' => 18, // Legal minimal drinking age
+            'random' => json_encode([
+                'inc_one' => 44,
+                'inc_two' => 15,
+                'inc_all' => 10,
+                'noone' => 10,
+                'dec_one' =>20,
+                'bomba' => 1,
+            ]), // Default percentages of random numbers how the game will work
         ]);
     }
 }

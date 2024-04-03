@@ -9,5 +9,5 @@ class Settings extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['app_name', 'description', 'keywords', 'bomba', 'age', 'editor',];
+    protected $fillable = ['app_name', 'description', 'keywords', 'random', 'age', 'editor',];
 }
