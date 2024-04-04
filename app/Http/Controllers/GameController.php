@@ -26,7 +26,7 @@ class GameController extends Controller
 
         $members = $data->player()->get();
 
-        return view('game.index', compact('data', 'members'));
+        return view('game.index', compact('members'));
     }
 
     // Create new-game page
@@ -134,9 +134,9 @@ class GameController extends Controller
 
     public function game(Request $request)
     {
-        $data = Auth::user()->game->where('active', 0)->first();
+        $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (count((array)$data) == 0)
+        if (empty($data))
             return 'Nothing special! (:';
         else {
             if ($request->query('do') == 'bomba')
@@ -150,31 +150,17 @@ class GameController extends Controller
                 }
             }
 
-            $members = unserialize($data->members);
-            $rand = rand(0, count((array)$members) - 1);
+            $players = $data->player()->get();
 
-            $memb = array_keys($members[$rand]);
-            //$shots = array_values($members[$rand]);
-            $plus = $this->random($data->bomba);
-
-            if ($plus == 2)
-                $show = $memb[0] . ' <span class="x2 text-danger plus">+2</span>';
-            elseif ($plus == -1)
-                $show = $memb[0] . ' <span class="x2 text-success plus">-1</span>';
-            elseif ($plus == 3)
-                $show = 'BOMBA<br /><span class="x2 text-primary">Dzer visi!</span>';
-            elseif ($plus == 4)
-                $show = 'Visi';
-            elseif ($plus == 5)
-                $show = 'Neviens';
-            else
-                $show = $memb[0] . ' <span class="x2 text-danger plus">+1</span>';
+            $random = Game::random();
+            $player = Player::random($players);
+            $show = $data->action($random, $player);
 
             $decode = [
                 'random'    => $show,
-                'id'        => $rand,
-                'count'     => $data->count,
-                'plus'      => $plus,
+                'id'        => $player,
+                'count'     => $data->player()->count(),
+                'plus'      => $random,
             ];
 
             return json_encode($decode);

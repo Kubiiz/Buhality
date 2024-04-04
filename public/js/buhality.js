@@ -102,17 +102,17 @@ function stop_game(){
 
 $(document).ready(function(){
     if (window.location.pathname == '/game') {
-        //run_game();
+        run_game();
 
-        $('.random').html(3).fadeOut('slow', function(){
-            $(this).html(2).show().fadeOut('slow', function(){
-                $(this).html(1).show().fadeOut('slow', function(){
-                    $(this).html('Sākam!').show().delay(1000).fadeOut('slow', function(){
-                        run_game();
-                    });
-                });
-            });
-        });
+        // $('.random').html(3).fadeOut('slow', function(){
+        //     $(this).html(2).show().fadeOut('slow', function(){
+        //         $(this).html(1).show().fadeOut('slow', function(){
+        //             $(this).html('Sākam!').show().delay(1000).fadeOut('slow', function(){
+        //                 run_game();
+        //             });
+        //         });
+        //     });
+        // });
     }
 });
 

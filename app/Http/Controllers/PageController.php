@@ -22,7 +22,9 @@ class PageController extends Controller
     {
         $players = Game::find(3)->player()->get();
         $random = Game::random();
-        return Game::find(3)->action($random, Player::random($players));
+        //return Game::find(3)->action($random, Player::random($players));
+        //dd($players);
+        return $players->sum('shots');
     }
 
 	public function info()
