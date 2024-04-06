@@ -77,7 +77,7 @@ class GameController extends Controller
         $insert = Auth::user()->game()->create([
             'title'     => $request['title'],
             'count'     => $request['n'],
-            'bomba'     => $request['bomba'] ? 1 : null,
+            'bomb'     => $request['bomba'] ? 1 : null,
         ]);
 
         // Add game players
@@ -91,87 +91,133 @@ class GameController extends Controller
         return redirect('game');
     }
 
-    public function bomba($data)
-    {
-        $memb = unserialize($data->members);
-
-        foreach ($memb as $us) {
-            foreach ($us as $ua => $s) {
-                $members[] = [$ua => ($s + 1)];
-            }
-        }
-
-        $data->update([
-            'shots'     => $data->shots + count((array)$memb),
-            'members'   => serialize($members)
-        ]);
-
-    }
-
-    public function shot($data, $member)
-    {
-        if (isset($member)) {
-            $memb = unserialize($data->members);
-
-            $i = -1;
-
-            foreach ($memb as $us) {
-                foreach ($us as $ua => $s) {
-                    $i++;
-
-                    $plus = $i == $member ? $s + 1 : $s;
-
-                    $members[] = [$ua => $plus];
-                }
-            }
-
-            $update['shots'] = $data->shots + 1;
-            $update['members'] = serialize($members);
-
-            $data->update($update);
-        }
-    }
-
-    public function game(Request $request)
+    // Update game statistics
+    public function stats()
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
+        // If there is no active game, redirect to new-game page
         if (empty($data))
-            return 'Nothing special! (:';
-        else {
-            if ($request->query('do') == 'bomba')
-                $this->bomba($data);
+            return redirect('new-game');
 
-            if ($request->query('do') == 'drink') {
-                $explode = explode(',', $request->query('member'));
+        $members = $data->player()->get();
 
-                foreach($explode as $e) {
-                    $this->shot($data, $e);
-                }
-            }
+        return view('game.stats', compact('members'));
+    }
 
+    // public function bomba($data)
+    // {
+    //     $memb = unserialize($data->members);
+
+    //     foreach ($memb as $us) {
+    //         foreach ($us as $ua => $s) {
+    //             $members[] = [$ua => ($s + 1)];
+    //         }
+    //     }
+
+    //     $data->update([
+    //         'shots'     => $data->shots + count((array)$memb),
+    //         'members'   => serialize($members)
+    //     ]);
+
+    // }
+
+    // public function shot($data, $member)
+    // {
+    //     if (isset($member)) {
+    //         $memb = unserialize($data->members);
+
+    //         $i = -1;
+
+    //         foreach ($memb as $us) {
+    //             foreach ($us as $ua => $s) {
+    //                 $i++;
+
+    //                 $plus = $i == $member ? $s + 1 : $s;
+
+    //                 $members[] = [$ua => $plus];
+    //             }
+    //         }
+
+    //         $update['shots'] = $data->shots + 1;
+    //         $update['members'] = serialize($members);
+
+    //         $data->update($update);
+    //     }
+    // }
+
+    public function start(Request $request)
+    {
+        $data = Auth::user()->game->whereNull('ended')->first();
+
+        if (!empty($data)) {
             $players = $data->player()->get();
 
-            $random = Game::random();
-            $player = Player::random($players);
-            $show = $data->action($random, $player);
+            return json_encode($players);
+        }
+    }
 
-            $decode = [
-                'random'    => $show,
-                'id'        => $player,
-                'count'     => $data->player()->count(),
-                'plus'      => $random,
+    public function action(Request $request)
+    {
+        $data = Auth::user()->game->whereNull('ended')->first();
+
+        if (!empty($data)) {
+            $random = Game::random($data->bomb);
+            $player = Player::random($data->player()->get());
+
+            if ($random == 'inc_one' || $random == 'inc_two') {
+                $inc = $random == 'inc_one' ? 1 : 2;
+
+                if ($player->count + $inc >= $data->count) {
+                    $count = $data->count;
+                    $display = "Dzer <span class='x2 text-primary'>$player->name</span>";
+                    $stop = true;
+                    $audio = 'drink';
+
+                    $player->increment('shots');
+                    $data->player()->update(['count' => 0]);
+                } else {
+                    $count = $player->count + $inc;
+                    $display = $player->name . "<span class='x2 text-danger plus'>+$inc</span>";
+
+                    $player->increment('count', $inc);
+                }
+            } else if ($random == 'inc_all') {
+                //
+            } else if ($random == 'dec_one') {
+                if ($player->count <= 0) {
+                    $random = 'noone';
+                    $count = $player->count;
+                    $display = 'Neviens';
+                } else {
+                    $count = $player->count - 1;
+                    $display = $player->name . "<span class='x2 text-success plus'>-1</span>";
+
+                    $player->decrement('count');
+                }
+            } else if ($random == 'noone') {
+                $count = $player->count;
+                $display = 'Neviens';
+            } else if ($random == 'bomb') {
+                //
+            }
+
+            $encode = [
+                'random'    => $random,
+                'player'    => $player->id,
+                'count'     => $count,
+                'display'   => $display,
+                'stop'      => $stop ?? false,
+                'audio'     => $audio ?? null,
             ];
 
-            return json_encode($decode);
+            return json_encode($encode);
         }
     }
 
     public function stop()
     {
-        Game::where('user_id', Auth::user()->id)->update([
-            'ended'      => 1
-        ]);
+        Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);
 
         return back();
     }

@@ -10,6 +10,7 @@ class Player extends Model
     use HasFactory;
 
     protected $fillable = ['game_id', 'name', 'count', 'shots',];
+    public $timestamps = false;
 
     // Get a random player or players
     public static function random(object $players, int $count = null) :object

@@ -13,7 +13,9 @@ Route::get('new-game', [GameController::class, 'create'])->middleware('auth');
 Route::post('new-game', [GameController::class, 'store'])->middleware('auth');
 
 Route::get('game', [GameController::class, 'index'])->middleware('auth');
-Route::get('game/run', [GameController::class, 'game'])->middleware('auth');
+Route::get('game/start', [GameController::class, 'start'])->middleware('auth');
+Route::get('game/action', [GameController::class, 'action'])->middleware('auth');
+Route::get('game/stats', [GameController::class, 'stats'])->middleware('auth');
 Route::get('game/stop', [GameController::class, 'stop'])->middleware('auth');
 
 Route::get('history', [PageController::class, 'history'])->middleware('auth');

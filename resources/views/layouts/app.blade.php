@@ -16,7 +16,6 @@
     <script src="{{ asset('js/jquery.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('js/buhality.js?' . time()) }}" defer></script>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-28201819-1"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 	<link href="{{ asset('css/style.css?' . time()) }}" rel="stylesheet">
@@ -47,7 +46,7 @@
                         <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle</a></li>
 
                         @if (request()->is('game'))
-                            <li><a href="javascript:;" data-toggle="modal" data-target="#stats"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
+                            <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
                         @elseif (count(Auth::user()->game->where('active', 0)) > 0)
                             <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg"></i>&nbsp; Turpināt spēli</a></li>
                         @endif

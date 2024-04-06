@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Game extends Model
 {
@@ -14,19 +15,25 @@ class Game extends Model
     /**
      * Show a random action based on the percentage
      *
-     * inc_one = Increment +1      Default 44%
-     * inc_two = Increment +2      Default 15%
-     * inc_all = Increment all +1  Default 10%
-     * noone = Noone,              Default 10%
-     * dec_one = Decrement -1      Default 20%
-     *
-     * bomb (3) = dzer visi        Default 1%
+     * inc_one  = Increment +1      Default 44%
+     * inc_two  = Increment +2      Default 15%
+     * inc_all  = Increment all +1  Default 10%
+     * noone    = Noone,            Default 10%
+     * dec_one  = Decrement -1      Default 20%
+     * bomb     = drink all         Default 1%
      */
-    public static function random() :string
+    public static function random(int $bomb = null) :string
     {
-        $json = json_decode(Settings::value('random'));
+        $percentages = [
+            'inc_one' => 44,
+            'inc_two' => 15,
+            //'inc_all' => 10,
+            'noone' => 10,
+            'dec_one' =>20,
+            //'bomb' => $bomb,
+        ];
 
-        foreach ($json as $key => $value) {
+        foreach ($percentages as $key => $value) {
             for ($i = 1; $i <= $value; $i++){
                 $array[] = $key;
             }
@@ -35,7 +42,8 @@ class Game extends Model
         shuffle($array);
         $random = array_rand($array);
 
-        return $array[$random];
+        //return $array[$random];
+        return 'inc_all';
     }
 
     // Get a random action and display it
