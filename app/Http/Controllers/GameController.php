@@ -157,7 +157,7 @@ class GameController extends Controller
         }
     }
 
-    public function action(Request $request)
+    public function action()
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
@@ -183,12 +183,54 @@ class GameController extends Controller
                     $player->increment('count', $inc);
                 }
             } else if ($random == 'inc_all') {
-                //
+                $drink = [];
+
+                foreach ($data->player as $players) {
+                    if ($players->count + 1 >= $data->count) {
+                        $stop = true;
+                        $drink[] = $players->name;
+
+                        $count[] = [
+                            'id'    => $players->id,
+                            'count' => $data->count,
+                        ];
+
+                        $players->increment('shots');
+                        $data->player()->update(['count' => 0]);
+                    } else {
+                        $count[] = [
+                            'id'    => $players->id,
+                            'count' => $players->count + 1,
+                        ];
+
+                        $players->increment('count');
+                    }
+                }
+
+                if (isset($stop)) {
+                    $audio = 'drink';
+                    $display = "<span class='x2 text-primary'>Dzer</span> " . implode(', ', $drink);
+                } else {
+                    $display = "Visiem <span class='x2 text-danger plus'>+1</span>";
+                }
             } else if ($random == 'dec_one') {
                 if ($player->count <= 0) {
-                    $random = 'noone';
-                    $count = $player->count;
-                    $display = 'Neviens';
+                    $random = 'inc_one';
+
+                    if ($player->count + 1 >= $data->count) {
+                        $count = $data->count;
+                        $display = "Dzer <span class='x2 text-primary'>$player->name</span>";
+                        $stop = true;
+                        $audio = 'drink';
+
+                        $player->increment('shots');
+                        $data->player()->update(['count' => 0]);
+                    } else {
+                        $count = $player->count + 1;
+                        $display = $player->name . "<span class='x2 text-danger plus'>+1</span>";
+
+                        $player->increment('count', 1);
+                    }
                 } else {
                     $count = $player->count - 1;
                     $display = $player->name . "<span class='x2 text-success plus'>-1</span>";
@@ -198,8 +240,21 @@ class GameController extends Controller
             } else if ($random == 'noone') {
                 $count = $player->count;
                 $display = 'Neviens';
-            } else if ($random == 'bomb') {
-                //
+            } else if ($random == 'bomb' && $data->bomb == 1) {
+                foreach ($data->player as $players) {
+                    $count[] = [
+                        'id'    => $players->id,
+                        'count' => $data->count,
+                    ];
+
+                    $players->increment('shots');
+                }
+
+                $data->player()->update(['count' => 0]);
+
+                $stop = true;
+                $audio = 'bomb';
+                $display = 'BOMBA<br /><span class="x2 text-primary">Dzer visi!</span>';
             }
 
             $encode = [

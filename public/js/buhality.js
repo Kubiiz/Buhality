@@ -24,32 +24,29 @@ var run;
 
 function game() {
     $.get(base + "game/action", function (result) {
-        let data = jQuery.parseJSON(result);
+        const data = jQuery.parseJSON(result);
         const display = $(".random").html(data.display).show();
 
         console.log(data.random);
 
         if (data.stop) {
-            display;
-            stop_game();
-
             if (data.audio.length) {
-                //new Audio(base + 'audio/' + data.audio + '.mp3').play();
+                new Audio(base + 'audio/' + data.audio + '.mp3').play();
                 console.log('Play.. ' + data.audio);
             }
-
+            
+            display;
+            stop_game();
         } else {
             display.delay(2000).fadeOut("slow");
         }
 
-        if (data.random == "inc_one" || data.random == "inc_two" || data.random == "dec_one" || data.random == "noone") {
-            $("#memb_" + data.player).text(data.count);
-        } else if (data.random == "inc_all") {
-            //
-        } else if (data.random == "bomb") {
-            //
+        if (Array.isArray(data.count)) {
+            data.count.forEach((element) => {
+                $("#memb_" + element.id).text(element.count);
+            });
         } else {
-            restart_game();
+            $("#memb_" + data.player).text(data.count);
         }
     });
 }
@@ -104,12 +101,6 @@ function next_round() {
     set_game();
 
     console.log("Next round");
-}
-
-function restart_game() {
-    stop_game();
-    run_game();
-    console.log("Restarting game");
 }
 
 $("#update_stats").click(function(){

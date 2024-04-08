@@ -25,12 +25,12 @@ class Game extends Model
     public static function random(int $bomb = null) :string
     {
         $percentages = [
-            'inc_one' => 44,
-            'inc_two' => 15,
-            //'inc_all' => 10,
-            'noone' => 10,
-            'dec_one' =>20,
-            //'bomb' => $bomb,
+            'inc_one'   => 44,
+            'inc_two'   => 15,
+            'inc_all'   => 10,
+            'noone'     => 10,
+            'dec_one'   => 20,
+            'bomb'      => $bomb,
         ];
 
         foreach ($percentages as $key => $value) {
@@ -42,8 +42,7 @@ class Game extends Model
         shuffle($array);
         $random = array_rand($array);
 
-        //return $array[$random];
-        return 'inc_all';
+        return $array[$random];
     }
 
     // Get a random action and display it
