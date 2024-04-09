@@ -29,7 +29,7 @@ class GameController extends Controller
     {
         $active = Auth::user()->game->where('ended', null)->first();
 
-        return view('create', compact('active'));
+        return view('game.create', compact('active'));
     }
 
     // Creating new game
@@ -55,7 +55,7 @@ class GameController extends Controller
         $fields['title'] = $request['title'];
         $rules['title'] = 'required|min:3|max:20';
         $fields['n'] = $request['n'];
-        $rules['n'] = 'required|numeric|min:3|max:15';
+        $rules['n'] = 'required|numeric|min:5|max:15';
 
         $validator = Validator::make($fields, $rules);
 
@@ -72,7 +72,7 @@ class GameController extends Controller
         $insert = Auth::user()->game()->create([
             'title'     => $request['title'],
             'count'     => $request['n'],
-            'bomb'     => $request['bomba'] ? 1 : null,
+            'bomb'      => $request['bomba'] ? 1 : null,
         ]);
 
         // Add game players
@@ -84,6 +84,90 @@ class GameController extends Controller
         }
 
         return redirect('game');
+    }
+
+    // Show Edit game view
+    public function edit($id)
+    {
+        $data = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
+
+        // If game not found redirect to new-game
+        if (empty($data))
+            return redirect('new-game');
+
+        $players = $data->player()->get();
+
+        return view('game.edit', compact('data', 'players'));
+    }
+
+    // Update game
+    public function update(Request $request)
+    {
+        $data = Game::findOrFail($request->id);
+
+        // If game not found redirect back
+        if ($data->user_id != Auth::user()->id) {
+            return back();
+        }
+
+        // Validate requests
+        if (is_array($request['pl'])) {
+            if (count($request['pl']) < 2) {
+                $fields['pl'] = '';
+                $rules['pl'] = 'required';
+            } else {
+                foreach ($request['pl'] as $key => $d) {
+                    $fields['pl' . $key] = $d;
+                    $rules['pl' . $key] = 'required|min:3|max:15';
+                }
+            }
+        }
+        else {
+            $fields['pl'] = '';
+            $rules['pl'] = 'required';
+        }
+
+        $fields['title'] = $request['title'];
+        $rules['title'] = 'required|min:3|max:20';
+        $fields['count'] = $request['count'];
+        $rules['count'] = 'required|numeric|min:5|max:15';
+
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        foreach ($data->player as $player) {
+            if (!isset($request['pl'][$player->id])) {
+                $player->delete();
+            } else {
+                $player->update(['name' => $request['pl'][$player->id]]);
+            }
+        }
+
+        $data->update([
+            'title'     => $request->title,
+            'count'     => $request->count,
+            'bomb'      => $request->bomb ? 1 : null,
+        ]);
+
+        return back()->with('status', 'Spēle izlabota!');
+        //return dd($request);
+    }
+
+    // Show user games
+    public function games()
+    {
+        $data = Auth::user()->game;
+        $active = $data->whereNull('ended')->first();
+        $games = $data->whereNotNull('ended')->all();
+
+        $shots = Player::whereHas('game', function($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })->sum('shots');
+
+        return view('game.games', compact('data', 'active', 'games', 'shots'));
     }
 
     // Update game statistics
@@ -224,5 +308,26 @@ class GameController extends Controller
         Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);
 
         return back();
+    }
+
+    // Continue game
+    public function continue($id)
+    {
+        $exists = Game::where('user_id', Auth::user()->id)->whereNull('ended')->exists();
+
+        if (!$exists)
+            Game::where(['id' => $id])->update(['ended' => null]);
+
+        return redirect('game');
+    }
+
+    // Delete game and game players
+    public function destroy($id)
+    {
+        $data = Game::where(['user_id'=> Auth::user()->id, 'id' => $id])->firstOrFail();
+        $data->delete();
+        $data->player()->delete();
+
+        return redirect()->back()->with('deleted', 'Spēle izdzēsta!');
     }
 }

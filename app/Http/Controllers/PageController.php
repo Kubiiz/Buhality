@@ -57,26 +57,4 @@ class PageController extends Controller
         return back()->with('success', 'Paldies! Jūsu ziņa nosūtīta!');
 
     }
-
-    public function history()
-    {
-        $data = Auth::user()->game;
-        $active = $data->whereNull('ended')->first();
-        $games = $data->whereNotNull('ended')->all();
-
-        $shots = Player::whereHas('game', function($query) {
-                    $query->where('user_id', Auth::user()->id);
-                })->sum('shots');
-
-        return view('history', compact('data', 'active', 'games', 'shots'));
-    }
-
-    public function destroy($id)
-    {
-        $data = Game::where(['user_id'=> Auth::user()->id, 'id' => $id])->firstOrFail();
-
-        $data->delete();
-
-        return redirect('history');
-    }
 }

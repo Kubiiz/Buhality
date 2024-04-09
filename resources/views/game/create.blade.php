@@ -36,7 +36,7 @@
         <div class="form-group">
             <label class="col-sm-3">Dalībnieki</label>
             <div class="col-sm-9">
-                <span class="label label-success pull-left add" onclick="javascript:add_member();">Pievienot</span> <small class="pull-right">Maksimālais dalībnieku skaits <b>10</b></small>
+                <span class="label label-success pull-left add" onclick="javascript:add_member();">Pievienot</span> <small class="pull-right">Dalībnieku skaits no <b>2</b> līdz <b>10</b></small>
 
                 @if ($errors->has('d'))
                     <div class="clearfix"></div>
@@ -65,8 +65,8 @@
         <div class="form-group{{ $errors->has('n') ? ' has-error' : '' }}">
             <label class="col-sm-3">Skaits</label>
             <div class="col-sm-9">
-                <input type="number" class="form-control" name="n" min="3" max="15" value="{{ old('n') }}">
-                <small>Līdz cik skaitam? No 3 līdz 15</small>
+                <input type="number" class="form-control" name="n" min="5" max="15" value="{{ old('n') }}">
+                <small>Līdz cik skaitam? No 5 līdz 15</small>
 
                 @if ($errors->has('n'))
                     <span class="help-block">

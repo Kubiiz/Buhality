@@ -1,26 +1,35 @@
+let i = 0;
+var run;
+
 function add_member() {
-    c++;
-    var a = $(".form-group").find(".m").length;
-    if (a > 9) alert("Nevar būt vairāk par 10 dalībniekiem!");
+    i++;
+    const player = $(".form-group").find(".m").length;
+
+    if (player > 9) alert("Nevar būt vairāk par 10 dalībniekiem!");
     else {
-        var b =
-            '<div id="d_' +
-            c +
-            '" class="m"><input type="text" class="form-control" name="d[]"><span class="label label-danger pull-right" onclick="javascript:remove_member(' +
-            c +
-            ');">Noņemt</span></div>';
-        $("#show_members").append(b);
+        let add_player = '<div id="d_' + i +'" class="m"><input type="text" class="form-control" name="d[]"><span class="label label-danger pull-right" onclick="javascript:remove_member(' + i + ');">Noņemt</span></div>';
+
+        $("#show_members").append(add_player);
     }
 }
-function remove_member(a) {
-    $("#d_" + a).remove();
+function remove_member(value) {
+    $("#d_" + value).remove();
 }
-var c = 0;
-$(document).ready(function () {
-    $("#rules").modal("hide");
-});
 
-var run;
+function add_player(value) {
+    i++;
+    const player = $(".form-group").find(".m").length;
+
+    if (player > 9) alert("Nevar būt vairāk par 10 dalībniekiem!");
+    else {
+        let add_player = '<div id="' + value + i +'" class="m"><input type="text" class="form-control" name="' + value + '[]"><span class="label label-danger pull-right" onclick="javascript:remove_member(' + value + i + ');">Noņemt</span></div>';
+        console.log('Added new edit player input: ' + value + i);
+        $("#show_players").append(add_player);
+    }
+}
+function remove_player(value) {
+    $("#" + value).remove();
+}
 
 function game() {
     $.get(base + "game/action", function (result) {
@@ -127,4 +136,6 @@ $(document).ready(function () {
     if (window.location.pathname == "/game") {
         run_game();
     }
+
+    $("#rules").modal("hide");
 });

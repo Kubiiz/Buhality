@@ -43,14 +43,14 @@
 							<a href="{{ url('/info') }}"><i class="fa fa-info fa-lg"></i>&nbsp; Informācija</a>
                         </li>
 						@if (!Auth::guest())
-                        <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle</a></li>
+                            <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle</a></li>
 
-                        @if (request()->is('game'))
-                            <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
-                        @elseif (count(Auth::user()->game->where('active', 0)) > 0)
-                            <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg"></i>&nbsp; Turpināt spēli</a></li>
+                            @if (request()->is('game'))
+                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
+                            @elseif (count(Auth::user()->game->whereNull('ended')) > 0)
+                                <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg"></i>&nbsp; Turpināt spēli</a></li>
+                            @endif
                         @endif
-                    @endif
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -72,7 +72,7 @@
 											<a href="{{ url('/cp') }}"><i class="fa fa-gear"></i> Kontroles panelis</a>
 										@endif
 
-										<a href="{{ url('/history') }}"><i class="fa fa-history"></i> Spēļu vēsture</a>
+										<a href="{{ url('/games') }}"><i class="fa fa-history"></i> Manas spēles</a>
 										<a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 											<i class="fa fa-sign-out"></i> {{ __('Logout') }}
 										</a>

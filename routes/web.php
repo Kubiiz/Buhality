@@ -16,9 +16,12 @@ Route::get('game/action', [GameController::class, 'action'])->middleware('auth')
 Route::get('game/stats', [GameController::class, 'stats'])->middleware('auth');
 Route::get('game/reset', [GameController::class, 'reset'])->middleware('auth');
 Route::get('game/stop', [GameController::class, 'stop'])->middleware('auth');
+Route::get('game/{id}/continue', [GameController::class, 'continue'])->middleware('auth');
+Route::get('game/{id}/edit', [GameController::class, 'edit'])->middleware('auth');
+Route::post('game/{id}/edit', [GameController::class, 'update'])->middleware('auth');
+Route::get('game/{id}/delete', [GameController::class, 'destroy'])->middleware('auth');
 
-Route::get('history', [PageController::class, 'history'])->middleware('auth');
-Route::get('history/{id}/delete', [PageController::class, 'destroy'])->middleware('auth');
+Route::get('games', [GameController::class, 'games'])->middleware('auth');
 
 Route::get('/info', [PageController::class, 'info']);
 Route::post('/info', [PageController::class, 'contact']);

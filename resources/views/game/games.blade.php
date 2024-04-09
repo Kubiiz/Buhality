@@ -3,7 +3,7 @@
 @section('content')
     <div class="form-horizontal st">
         <div class="form-group head history">
-            <i class="fa fa-history fa-lg"></i>&nbsp; Spēļu vēsture
+            <i class="fa fa-history fa-lg"></i>&nbsp; Manas spēles
         </div>
         <div class="form-group stats">
             <i class="fa fa-trophy"></i> Kopā <span class="text-primary">{{ $data->count() }}</span> spēles<br>
@@ -40,7 +40,11 @@
             </div>
             <br>
         @endif
-
+        @if (session('deleted'))
+            <div class="alert alert-success">
+                {{ session('deleted') }}
+            </div>
+        @endif
         @if (count($games) > 0)
             @foreach($games as $game)
                 <div class="panel panel-default">
@@ -50,8 +54,11 @@
                                 <i class="fa fa-chevron-right"></i> {{ $game->title }}
                             </a>
                             <div class="pull-right right">
+                            @if (empty($active))
+                                <a href="{{ url('/game/' . $game->id . '/continue') }}" class="label label-success"><i class="fa fa-play"></i> Turpināt</a>
+                            @endif
                             <a href="{{ url('/game/' . $game->id . '/edit') }}" class="label label-warning"><i class="fa fa-pencil"></i> Labot</a>
-                            <a href="{{ url('/history/' . $game->id . '/delete') }}" onclick="if( confirm( 'Dzēst spēli?' ) ) {return true;}else{return false;}" class="label label-default">
+                            <a href="{{ url('/game/' . $game->id . '/delete') }}" onclick="if( confirm( 'Dzēst spēli?' ) ) {return true;}else{return false;}" class="label label-default">
                                 <i class="fa fa-times"></i> Dzēst
                             </a>
                             </div>
