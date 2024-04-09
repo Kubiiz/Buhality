@@ -8,6 +8,7 @@
     <button style="display: none" onclick="javascript:run_game();" class="btn btn-primary btn-lg btn-game continue"><i
             class="fa fa-play"></i> Turpināt</button>
     <div class="counter">
+        <button onclick="javascript:reset_counter();" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> Atiestatīt</button>
         @foreach ($members as $memb)
             <div class="memb_counter">
                 <span id="memb">{{ $memb->name }}</span> - <span class="shots text-primary refresh"id="memb_{{ $memb->id }}">{{ $memb->count }}</span>

@@ -10,11 +10,6 @@ use Validator;
 
 class GameController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     // Checks if a game is active and starts the game
     public function index()
     {
@@ -32,9 +27,9 @@ class GameController extends Controller
     // Create new-game page
     public function create()
     {
-        $count = Auth::user()->game->where('ended', null)->count();
+        $active = Auth::user()->game->where('ended', null)->first();
 
-        return view('create', compact('count'));
+        return view('create', compact('active'));
     }
 
     // Creating new game
@@ -96,180 +91,134 @@ class GameController extends Controller
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        // If there is no active game, redirect to new-game page
         if (empty($data))
-            return redirect('new-game');
+            return false;
 
         $members = $data->player()->get();
 
         return view('game.stats', compact('members'));
     }
 
-    // public function bomba($data)
-    // {
-    //     $memb = unserialize($data->members);
-
-    //     foreach ($memb as $us) {
-    //         foreach ($us as $ua => $s) {
-    //             $members[] = [$ua => ($s + 1)];
-    //         }
-    //     }
-
-    //     $data->update([
-    //         'shots'     => $data->shots + count((array)$memb),
-    //         'members'   => serialize($members)
-    //     ]);
-
-    // }
-
-    // public function shot($data, $member)
-    // {
-    //     if (isset($member)) {
-    //         $memb = unserialize($data->members);
-
-    //         $i = -1;
-
-    //         foreach ($memb as $us) {
-    //             foreach ($us as $ua => $s) {
-    //                 $i++;
-
-    //                 $plus = $i == $member ? $s + 1 : $s;
-
-    //                 $members[] = [$ua => $plus];
-    //             }
-    //         }
-
-    //         $update['shots'] = $data->shots + 1;
-    //         $update['members'] = serialize($members);
-
-    //         $data->update($update);
-    //     }
-    // }
-
-    public function start(Request $request)
+    // Reset counter
+    public function reset()
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (!empty($data)) {
-            $players = $data->player()->get();
+        if (empty($data))
+            return false;
 
-            return json_encode($players);
-        }
+        $data->player()->update(['count' => 0]);
+
+        return true;
     }
 
+    // Play the game. Get a random action and do something
     public function action()
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (!empty($data)) {
-            $random = Game::random($data->bomb);
-            $player = Player::random($data->player()->get());
+        if (empty($data))
+            return false;
 
-            if ($random == 'inc_one' || $random == 'inc_two') {
-                $inc = $random == 'inc_one' ? 1 : 2;
+        $random = Game::random($data->bomb);
+        $player = $data->player()->get()->random();
+        $display = [];
 
-                if ($player->count + $inc >= $data->count) {
-                    $count = $data->count;
-                    $display = "Dzer <span class='x2 text-primary'>$player->name</span>";
+        if ($random == 'inc_one' || $random == 'inc_two') {
+            $inc = $random == 'inc_two' ? 2 : 1;
+            $display[] = $player->name;
+
+            if ($player->count + $inc >= $data->count) {
+                $count = $data->count;
+                $stop = true;
+                $audio = 'drink';
+                $random = $audio;
+
+                $player->increment('shots');
+                $data->player()->update(['count' => 0]);
+            } else {
+                $count = $player->count + $inc;
+
+                $player->increment('count', $inc);
+            }
+        } else if ($random == 'inc_all') {
+            foreach ($data->player as $players) {
+                if ($players->count + 1 >= $data->count) {
                     $stop = true;
                     $audio = 'drink';
-
-                    $player->increment('shots');
-                    $data->player()->update(['count' => 0]);
-                } else {
-                    $count = $player->count + $inc;
-                    $display = $player->name . "<span class='x2 text-danger plus'>+$inc</span>";
-
-                    $player->increment('count', $inc);
-                }
-            } else if ($random == 'inc_all') {
-                $drink = [];
-
-                foreach ($data->player as $players) {
-                    if ($players->count + 1 >= $data->count) {
-                        $stop = true;
-                        $drink[] = $players->name;
-
-                        $count[] = [
-                            'id'    => $players->id,
-                            'count' => $data->count,
-                        ];
-
-                        $players->increment('shots');
-                        $data->player()->update(['count' => 0]);
-                    } else {
-                        $count[] = [
-                            'id'    => $players->id,
-                            'count' => $players->count + 1,
-                        ];
-
-                        $players->increment('count');
-                    }
-                }
-
-                if (isset($stop)) {
-                    $audio = 'drink';
-                    $display = "<span class='x2 text-primary'>Dzer</span> " . implode(', ', $drink);
-                } else {
-                    $display = "Visiem <span class='x2 text-danger plus'>+1</span>";
-                }
-            } else if ($random == 'dec_one') {
-                if ($player->count <= 0) {
-                    $random = 'inc_one';
-
-                    if ($player->count + 1 >= $data->count) {
-                        $count = $data->count;
-                        $display = "Dzer <span class='x2 text-primary'>$player->name</span>";
-                        $stop = true;
-                        $audio = 'drink';
-
-                        $player->increment('shots');
-                        $data->player()->update(['count' => 0]);
-                    } else {
-                        $count = $player->count + 1;
-                        $display = $player->name . "<span class='x2 text-danger plus'>+1</span>";
-
-                        $player->increment('count', 1);
-                    }
-                } else {
-                    $count = $player->count - 1;
-                    $display = $player->name . "<span class='x2 text-success plus'>-1</span>";
-
-                    $player->decrement('count');
-                }
-            } else if ($random == 'noone') {
-                $count = $player->count;
-                $display = 'Neviens';
-            } else if ($random == 'bomb' && $data->bomb == 1) {
-                foreach ($data->player as $players) {
+                    $random = $audio;
+                    $display[] = $players->name;
                     $count[] = [
                         'id'    => $players->id,
                         'count' => $data->count,
                     ];
 
                     $players->increment('shots');
+                    $data->player()->update(['count' => 0]);
+                } else {
+                    $count[] = [
+                        'id'    => $players->id,
+                        'count' => $players->count + 1,
+                    ];
+
+                    $players->increment('count');
                 }
+            }
+        } else if ($random == 'dec_one') {
+            $display[] = $player->name;
 
-                $data->player()->update(['count' => 0]);
+            if ($player->count <= 0) {
+                $random = 'inc_one';
 
-                $stop = true;
-                $audio = 'bomb';
-                $display = 'BOMBA<br /><span class="x2 text-primary">Dzer visi!</span>';
+                if ($player->count + 1 >= $data->count) {
+                    $count = $data->count;
+                    $stop = true;
+                    $audio = 'drink';
+                    $random = $audio;
+
+                    $player->increment('shots');
+                    $data->player()->update(['count' => 0]);
+                } else {
+                    $count = $player->count + 1;
+
+                    $player->increment('count');
+                }
+            } else {
+                $count = $player->count - 1;
+
+                $player->decrement('count');
+            }
+        } else if ($random == 'bomb' && $data->bomb == 1) {
+            foreach ($data->player as $players) {
+                $count[] = [
+                    'id'    => $players->id,
+                    'count' => $data->count,
+                ];
+
+                $players->increment('shots');
             }
 
-            $encode = [
-                'random'    => $random,
-                'player'    => $player->id,
-                'count'     => $count,
-                'display'   => $display,
-                'stop'      => $stop ?? false,
-                'audio'     => $audio ?? null,
-            ];
+            $data->player()->update(['count' => 0]);
 
-            return json_encode($encode);
+            $stop = true;
+            $audio = 'bomb';
+        } else if ($random == 'noone') {
+            $count = $player->count;
         }
+
+        $encode = [
+            'random'    => $random,
+            'player'    => $player->id,
+            'count'     => $count,
+            'display'   => Game::action($random, $display),
+            'stop'      => $stop ?? false,
+            'audio'     => $audio ?? null,
+        ];
+
+        return json_encode($encode);
     }
 
+    // Finish the game
     public function stop()
     {
         Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);

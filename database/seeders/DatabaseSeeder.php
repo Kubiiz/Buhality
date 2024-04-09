@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'game@etr.lv',
             'password' => bcrypt('password'),
-            'group' => 1, // 1-admin
+            'group' => 1, // 1 - admin
         ]);
     }
 }

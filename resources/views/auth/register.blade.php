@@ -5,23 +5,6 @@
         <div class="form-group head">
             <i class="fa fa-user-plus fa-lg"></i>&nbsp; Reģistrācija
         </div>
-        <div class="form-group social">
-            <center>
-                <a href="{{ url('/auth/facebook') }}">
-                    <img src="{{ asset('images') }}/facebook.png" alt="" />
-                </a>
-                <a href="{{ url('/auth/twitter') }}">
-                    <img src="{{ asset('images') }}/twitter.png" alt="" />
-                </a>
-            </center>
-        </div>
-        <div class="form-group useform">
-            <center>
-                <i class="fa fa-arrow-down"></i>
-                <span><b>Vai</b></span> izmanto formu
-                <i class="fa fa-arrow-down"></i>
-            </center>
-        </div>
         <div class="card">
             <div class="card-body">
                 <form method="POST" action="{{ route('register') }}">

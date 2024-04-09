@@ -7,12 +7,13 @@
         <div class="form-group head">
             <i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle
         </div>
-        @if($count > 0)
+        @if($active)
             <div class="form-group">
                 <div class="alert alert-info">
-                    Tev ir nepabeigta spēle!
+                    Tev ir iesākta spēle!
                     <div class="pull-right warning">
                         <a href="{{ url('/game') }}" class="btn btn-sm btn-success"><i class="fa fa-play"></i> Turpināt</a>
+                        <a href="{{ url('/game/' . $active->id . '/edit') }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> Labot</a>
                         <a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}" class="btn btn-sm btn-danger"><i class="fa fa-stop"></i>&nbsp; Beigt</a>
                     </div>
                 </div>

@@ -20,8 +20,12 @@ class PageController extends Controller
 
     public function test()
     {
-        $players = Game::find(3)->player()->get();
-        $random = Game::random(1);
+        $players = [];
+
+        $players[] = 'Dāvis';
+        $players[] = 'Edgars';
+
+        $random = Game::action(Game::random(), $players);
         //return Game::find(3)->action($random, Player::random($players));
         //dd($players);
         return $random;
@@ -56,14 +60,15 @@ class PageController extends Controller
 
     public function history()
     {
-        $game = Auth::user()->game;
+        $data = Auth::user()->game;
+        $active = $data->whereNull('ended')->first();
+        $games = $data->whereNotNull('ended')->all();
 
-        $active = $game->where('active', 0)->first();
-        $data = Game::where(['user_id'=> Auth::user()->id, 'active' => 1])->latest()->get();
-        $count = count($data);
-        $sum = $game->sum('shots');
+        $shots = Player::whereHas('game', function($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })->sum('shots');
 
-        return view('history', compact('data', 'active', 'count', 'sum'));
+        return view('history', compact('data', 'active', 'games', 'shots'));
     }
 
     public function destroy($id)

@@ -6,12 +6,12 @@
             <i class="fa fa-history fa-lg"></i>&nbsp; Spēļu vēsture
         </div>
         <div class="form-group stats">
-            <i class="fa fa-trophy"></i> Izspēlētas <span class="text-primary">{{ $count }}</span> spēles<br>
-            <i class="fa fa-glass"></i> Kopā izdzerti <span class="text-primary">{{ $sum }}</span> šoti
+            <i class="fa fa-trophy"></i> Kopā <span class="text-primary">{{ $data->count() }}</span> spēles<br>
+            <i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $shots }}</span> šoti
         </div>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-        @if (count((array)$active) > 0)
+        @if (!empty($active))
             <div class="panel panel-info">
                 <div class="panel-heading" role="tab" id="heading_open">
                     <h4 class="panel-title">
@@ -20,30 +20,20 @@
                         </a>
                         <div class="pull-right right">
                             <a href="{{ url('/game') }}" class="label label-success"><i class="fa fa-play"></i> Turpināt</a>
+                            <a href="{{ url('/game/' . $active->id . '/edit') }}" class="label label-warning"><i class="fa fa-pencil"></i> Labot</a>
                             <a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}" class="label label-danger"><i class="fa fa-stop"></i>&nbsp; Beigt</a>
                         </div>
                     </h4>
                 </div>
                 <div id="collapse_open" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_open">
                     <div class="panel-body">
-                        @php
-							$unser = unserialize($active->members);
-							$shotss = 0;
-                        @endphp
-
 						<div class="pull-left">
-                        @foreach($unser as $us)
-                            @foreach($us as $ua => $s)
-                                {{ $ua }} - <span class="text-primary">{{ $s }}</span> šoti<br>
-								
-								@php
-									$shotss = $shotss +$s;
-								@endphp
-                            @endforeach
+                        @foreach($active->player as $player)
+                            {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> šoti<br>
                         @endforeach
 						</div>
 						<div class="pull-right">
-							<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $shotss }}</span> šoti</i>
+							<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $active->player()->sum('shots') }}</span> šoti</i>
 						</div>
                     </div>
                 </div>
@@ -51,45 +41,36 @@
             <br>
         @endif
 
-        @if ($count > 0)
-            @foreach($data as $d)
+        @if (count($games) > 0)
+            @foreach($games as $game)
                 <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="heading{{ $d->id }}">
+                    <div class="panel-heading" role="tab" id="heading{{ $game->id }}">
                         <h4 class="panel-title">
-                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $d->id }}" aria-expanded="false" aria-controls="collapse{{ $d->id }}">
-                                <i class="fa fa-chevron-right"></i> {{ $d->title }}
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $game->id }}" aria-expanded="false" aria-controls="collapse{{ $game->id }}">
+                                <i class="fa fa-chevron-right"></i> {{ $game->title }}
                             </a>
-                            <a href="{{ url('/history/' . $d->id . '/delete') }}" onclick="if( confirm( 'Dzēst spēli?' ) ) {return true;}else{return false;}" id="delete" class="btn label label-default">
+                            <div class="pull-right right">
+                            <a href="{{ url('/game/' . $game->id . '/edit') }}" class="label label-warning"><i class="fa fa-pencil"></i> Labot</a>
+                            <a href="{{ url('/history/' . $game->id . '/delete') }}" onclick="if( confirm( 'Dzēst spēli?' ) ) {return true;}else{return false;}" class="label label-default">
                                 <i class="fa fa-times"></i> Dzēst
                             </a>
+                            </div>
                         </h4>
                     </div>
-                    <div id="collapse{{ $d->id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ $d->id }}">
+                    <div id="collapse{{ $game->id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ $game->id }}">
                         <div class="panel-body">
 							<div class="pull-left">
-                            @php
-                                $unser = unserialize($d->members);
-								$shots = [];
-								$shots[$d->id] = 0;
-                            @endphp
-
-                            @foreach($unser as $us)
-                                @foreach($us as $ua => $s)
-                                    {{ $ua }} - <span class="text-primary">{{ $s }}</span> šoti<br>
-									
-									@php
-										$shots[$d->id] = $shots[$d->id] + $s;
-									@endphp
-                                @endforeach
+                            @foreach($game->player as $player)
+                                {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> šoti<br>
                             @endforeach
 							</div>
 							<div class="pull-right right">
 								<div>
 									<i class="fa fa-clock-o"></i>
-									<div class="date">{{ $d->created_at }}</div>
+									<div class="date">{{ $game->created_at }}</div>
 								</div>
 								<div>
-									<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $shots[$d->id] }}</span> šoti</i>
+									<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $game->player()->sum('shots') }}</span> šoti</i>
 								</div>
                             </div>
                         </div>

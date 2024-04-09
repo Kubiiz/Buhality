@@ -26,15 +26,15 @@ function game() {
     $.get(base + "game/action", function (result) {
         const data = jQuery.parseJSON(result);
         const display = $(".random").html(data.display).show();
-
-        console.log(data.random);
+        const count = data.count;
+        //console.log(data.random);
 
         if (data.stop) {
             if (data.audio.length) {
                 new Audio(base + 'audio/' + data.audio + '.mp3').play();
-                console.log('Play.. ' + data.audio);
+                //console.log('Play.. ' + data.audio);
             }
-            
+
             display;
             stop_game();
         } else {
@@ -42,16 +42,17 @@ function game() {
         }
 
         if (Array.isArray(data.count)) {
-            data.count.forEach((element) => {
-                $("#memb_" + element.id).text(element.count);
+            count.forEach((e) => {
+                $("#memb_" + e.id).text(e.count);
             });
         } else {
-            $("#memb_" + data.player).text(data.count);
+           $("#memb_" + data.player).text(data.count);
         }
     });
 }
 
 function set_game() {
+    clearInterval(run);
     game();
     run = setInterval(game, 3000);
 
@@ -73,7 +74,7 @@ function run_game() {
             });
         });
     });
-    console.log("Starting game");
+    //console.log("Starting game");
 }
 
 function pause_game(act) {
@@ -83,14 +84,14 @@ function pause_game(act) {
     $(".continue").show();
 
     clearInterval(run);
-    console.log("Game paused");
+    //console.log("Game paused");
 }
 
 function stop_game() {
     $(".reset").show();
     $(".pause").hide();
     clearInterval(run);
-    console.log("Game paused. Waiting for action..");
+    //console.log("Game paused. Waiting for action..");
 }
 
 function next_round() {
@@ -99,14 +100,26 @@ function next_round() {
     $(".refresh").text(0);
 
     set_game();
+    //console.log("Next round");
+}
 
-    console.log("Next round");
+function reset_counter() {
+    $.get(base + 'game/reset', function (data) {
+        if (data) {
+            stop_game();
+            $(".memb_counter .shots").text(0);
+            run_game();
+            //console.log("Counter resets.");
+        }
+    });
 }
 
 $("#update_stats").click(function(){
     $.get(base + 'game/stats', function (data) {
-        $('#show_stats').html(data);
-        console.log("Update statistics");
+        if (data) {
+            $('#show_stats').html(data);
+            //console.log("Update statistics");
+        }
     });
 });
 
