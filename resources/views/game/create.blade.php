@@ -33,54 +33,58 @@
                 @endif
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group player_list">
             <label class="col-sm-3">Dalībnieki</label>
             <div class="col-sm-9">
-                <span class="label label-success pull-left add" onclick="javascript:add_member();">Pievienot</span> <small class="pull-right">Dalībnieku skaits no <b>2</b> līdz <b>10</b></small>
+                <span class="label label-success pull-left add" onclick="player(true);">Pievienot</span> <small class="pull-right">Dalībnieku skaits no <b>2</b> līdz <b>10</b></small>
 
-                @if ($errors->has('d'))
+                @if ($errors->has('player'))
                     <div class="clearfix"></div>
                     <span class="text-danger">
-                        <strong>Pievieno vismaz 2 spēlētājus</strong>
+                        <strong>{{ $errors->first('player') }}</strong>
                     </span>
                 @endif
+                @if (old('player'))
+                    @foreach (old('player') as $key => $value)
+                        <div id="player_{{ $key }}" class="player_input {{ $errors->has('player.'.$key) ? 'has-error' : 'll' }}">
+                            <div class="input_player"><input value="{{ $value }}" type="text" class="form-control" name="player[]"><span class="label label-danger pull-right" onclick="player_remove({{ $key }});">Noņemt</span></div>
 
-                @if (old('d'))
-                    @foreach (old('d') as $key => $d)
-                        <div id="d_{{ $key }}" class="{{ $errors->has('d'.$key) ? 'has-error' : 'll' }}">
-                            <div class="m"><input value="{{ $d }}" type="text" class="form-control" name="d[]"><span class="label label-danger pull-right" onclick="javascript:remove_member({{ $key }});">Noņemt</span></div>
-
-                            @if ($errors->has('d'.$key))
+                            @if ($errors->has('player.'.$key))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('d'.$key) }}</strong>
+                                    <strong>{{ $errors->first('player.'.$key) }}</strong>
                                 </span>
                             @endif
                         </div>
                     @endforeach
                 @endif
 
-                <div id="show_members"></div>
+                <div id="show_players"></div>
             </div>
         </div>
-        <div class="form-group{{ $errors->has('n') ? ' has-error' : '' }}">
+        <div class="form-group{{ $errors->has('count') ? ' has-error' : '' }}">
             <label class="col-sm-3">Skaits</label>
             <div class="col-sm-9">
-                <input type="number" class="form-control" name="n" min="5" max="15" value="{{ old('n') }}">
+                <input type="number" class="form-control" name="count" min="5" max="15" value="{{ old('count') }}">
                 <small>Līdz cik skaitam? No 5 līdz 15</small>
 
-                @if ($errors->has('n'))
+                @if ($errors->has('count'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('n') }}</strong>
+                    <strong>{{ $errors->first('count') }}</strong>
                 </span>
                 @endif
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('bomb') ? ' has-error' : '' }}">
             <label class="col-sm-3">Bomba</label>
             <div class="col-md-9">
                 <div class="checkbox">
-                    <label><input type="checkbox" name="bomba" value="1" {{ old('bomba') ? 'checked' : '' }}></label>
-					<span class="newbomba"><small>Izkrītot "<i><strong>Bomba</strong></i>", būs jādzer visiem</small></span>
+                    <label><input type="checkbox" name="bomb" value="1" {{ old('bomb') ? 'checked' : '' }}></label>
+                    <span class="newbomba"><small>Izkrītot "<i><strong>Bomba</strong></i>", būs jādzer visiem</small></span>
+                    @if ($errors->has('bomb'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('bomb') }}</strong>
+                        </span>
+                    @endif
                 </div>
             </div>
         </div>

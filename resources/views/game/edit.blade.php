@@ -61,18 +61,24 @@
 
                 @if ($errors->has('count'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('count') }}</strong>
-                </span>
+                        <strong>{{ $errors->first('count') }}</strong>
+                    </span>
                 @endif
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('bomb') ? ' has-error' : '' }}">
             <label class="col-sm-3">Bomba</label>
             <div class="col-md-9">
                 <div class="checkbox">
                     <label><input type="checkbox" name="bomb" value="1" {{ old('bomb', $data->bomb) ? 'checked' : '' }}></label>
 					<span class="newbomba"><small>Izkrītot "<i><strong>Bomba</strong></i>", būs jādzer visiem</small></span>
                 </div>
+
+                @if ($errors->has('bomb'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('bomb') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <div class="form-group">

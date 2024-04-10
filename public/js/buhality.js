@@ -1,34 +1,29 @@
-let i = 0;
-var run;
+let i = 0, run;
+const add_players = $("#add_players");
 
-function add_member() {
+function player() {
     i++;
-    const player = $(".form-group").find(".m").length;
+    const player = $(".player_list").find(".player_input");
 
-    if (player > 9) alert("Nevar būt vairāk par 10 dalībniekiem!");
-    else {
-        let add_player = '<div id="d_' + i +'" class="m"><input type="text" class="form-control" name="d[]"><span class="label label-danger pull-right" onclick="javascript:remove_member(' + i + ');">Noņemt</span></div>';
+    if (player.length <= 9) {
+        const add_player = '<div id="player_' + i + '" class="player_input">' +
+                                '<input type="text" class="form-control" name="player[]">' +
+                                '<span class="label label-danger pull-right" onclick="player_remove(' + i + ');">' +
+                                    'Noņemt' +
+                                '</span>' +
+                            '</div>';
 
-        $("#show_members").append(add_player);
-    }
-}
-function remove_member(value) {
-    $("#d_" + value).remove();
-}
-
-function add_player(value) {
-    i++;
-    const player = $(".form-group").find(".m").length;
-
-    if (player > 9) alert("Nevar būt vairāk par 10 dalībniekiem!");
-    else {
-        let add_player = '<div id="' + value + i +'" class="m"><input type="text" class="form-control" name="' + value + '[]"><span class="label label-danger pull-right" onclick="javascript:remove_member(' + value + i + ');">Noņemt</span></div>';
-        console.log('Added new edit player input: ' + value + i);
         $("#show_players").append(add_player);
     }
 }
-function remove_player(value) {
-    $("#" + value).remove();
+
+function player_remove(value) {
+    const player = $(".player_list").find(".player_input");
+
+    if (player.length > 2)
+        $('#player_' + value).remove();
+
+    return;
 }
 
 function game() {
@@ -36,12 +31,10 @@ function game() {
         const data = jQuery.parseJSON(result);
         const display = $(".random").html(data.display).show();
         const count = data.count;
-        //console.log(data.random);
 
         if (data.stop) {
             if (data.audio.length) {
                 new Audio(base + 'audio/' + data.audio + '.mp3').play();
-                //console.log('Play.. ' + data.audio);
             }
 
             display;

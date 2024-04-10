@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateGameRequest;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Player;
 use Auth;
-use Validator;
 
 class GameController extends Controller
 {
@@ -36,50 +36,29 @@ class GameController extends Controller
     public function store(Request $request)
     {
         // Validate requests
-        if (is_array($request['d'])) {
-            if (count($request['d']) < 2) {
-                $fields['d'] = '';
-                $rules['d'] = 'required';
-            }
-            else
-                foreach ($request['d'] as $key => $d) {
-                    $fields['d' . $key] = $d;
-                    $rules['d' . $key] = 'required|min:3';
-                }
-        }
-        else {
-            $fields['d'] = '';
-            $rules['d'] = 'required';
-        }
-
-        $fields['title'] = $request['title'];
-        $rules['title'] = 'required|min:3|max:20';
-        $fields['n'] = $request['n'];
-        $rules['n'] = 'required|numeric|min:5|max:15';
-
-        $validator = Validator::make($fields, $rules);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        // Complete previous games if exists
-        Game::where('user_id', Auth::user()->id)->update([
-            'ended'      => 1
+        $request->validate([
+            'title'     => 'required|min:3|max:20',
+            'player'    => 'required|min:2|max:10',
+            'player.*'  => 'required|min:3|distinct',
+            'count'     => 'required|numeric|between:5,15',
+            'bomb'      => 'in:1',
         ]);
 
+        // Complete previous games if exists
+        Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);
+
         // Create new game
-        $insert = Auth::user()->game()->create([
-            'title'     => $request['title'],
-            'count'     => $request['n'],
-            'bomb'      => $request['bomba'] ? 1 : null,
+        $create = Auth::user()->game()->create([
+            'title' => $request->title,
+            'count' => $request->count,
+            'bomb'  => $request->bomb,
         ]);
 
         // Add game players
-        foreach ($request['d'] as $key => $d) {
+        foreach ($request->player as $key => $value) {
             Player::create([
-                'game_id'   => $insert->id,
-                'name'      => $d,
+                'game_id'   => $create->id,
+                'name'      => $value,
             ]);
         }
 
