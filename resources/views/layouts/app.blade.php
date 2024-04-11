@@ -11,7 +11,7 @@
     <title>Buhality - Ballīšu spēle</title>
     <link rel="shortcut icon" href="{{ asset('images') }}/favicon.png" type="image/png" />
     <script>
-        var base = '{{ url('/') }}/';
+        const base = '{{ url('/') }}/';
     </script>
     <script src="{{ asset('js/jquery.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
@@ -40,15 +40,16 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 						<li class="nav-item">
-							<a href="{{ url('/info') }}"><i class="fa fa-info fa-lg"></i>&nbsp; Informācija</a>
+							<a href="{{ url('/info') }}"><i class="fa fa-info fa-lg text-info"></i>&nbsp; Informācija</a>
                         </li>
 						@if (!Auth::guest())
-                            <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; Jauna spēle</a></li>
+                            <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg text-primary"></i>&nbsp; Jauna spēle</a></li>
 
                             @if (request()->is('game'))
-                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
+                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg text-success"></i>&nbsp; Statistika</a></li>
                             @elseif (count(Auth::user()->game->whereNull('ended')) > 0)
-                                <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg"></i>&nbsp; Turpināt spēli</a></li>
+                                <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg text-success"></i>&nbsp; Turpināt spēli</a></li>
+                                <li><a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}"><i class="fa fa-stop fa-lg text-warning"></i>&nbsp; Beigt spēli</a></li>
                             @endif
                         @endif
 
@@ -69,7 +70,7 @@
 								<ul class="dropdown-menu" role="menu">
 									<li>
 										@if (Auth::user()->group == 1)
-											<a href="{{ url('/cp') }}"><i class="fa fa-gear"></i> Kontroles panelis</a>
+											<a href="{{ url('/admin') }}"><i class="fa fa-gear"></i> Kontroles panelis</a>
 										@endif
 
 										<a href="{{ url('/games') }}"><i class="fa fa-history"></i> Manas spēles</a>
