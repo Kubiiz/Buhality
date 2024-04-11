@@ -105,6 +105,7 @@ function pause_game(act) {
 function stop_game() {
     $(".reset").show();
     $(".pause").hide();
+    $("#pause").fadeOut("slow");
     clearInterval(run);
 }
 

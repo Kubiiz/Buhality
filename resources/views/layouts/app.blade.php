@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Dzeršanas spēle">
+    <meta name="description" content="Ballīšu spēle">
     <meta name="keywords" content="Buhality, buha, buhāt, buba, bubāt, dzert, kost, ieraut, liet bākā">
     <meta name="author" content="Kubiiz (epasts - buhality@etr.lv)">
-    <title>Buhality - Dzeršanas spēle</title>
+    <title>Buhality - Ballīšu spēle</title>
     <link rel="shortcut icon" href="{{ asset('images') }}/favicon.png" type="image/png" />
     <script>
         var base = '{{ url('/') }}/';
@@ -73,6 +73,7 @@
 										@endif
 
 										<a href="{{ url('/games') }}"><i class="fa fa-history"></i> Manas spēles</a>
+                                        <a href="{{ url('/profile') }}"><i class="fa fa-pencil"></i> Labot profilu</a>
 										<a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 											<i class="fa fa-sign-out"></i> {{ __('Logout') }}
 										</a>
