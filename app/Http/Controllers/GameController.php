@@ -89,7 +89,7 @@ class GameController extends Controller
         ]);
 
         // Delete game players if not exists anymore
-        $notIn = Player::where('game_id', $data->id)->whereNotIn('name', $request->player)->delete();
+        Player::where('game_id', $data->id)->whereNotIn('name', $request->player)->delete();
 
         // Create new game players if is added new
         foreach ($request->player as $key => $value) {
@@ -153,10 +153,12 @@ class GameController extends Controller
         if (empty($data))
             return false;
 
+        // Get a random action and player
         $random = Game::random($data->bomb);
         $player = $data->player()->get()->random();
         $display = [];
 
+        // Check if player count will be increased
         if ($random == 'inc_one' || $random == 'inc_two') {
             $inc = $random == 'inc_two' ? 2 : 1;
             $display[] = $player->name;
@@ -174,7 +176,9 @@ class GameController extends Controller
 
                 $player->increment('count', $inc);
             }
-        } else if ($random == 'inc_all') {
+        }
+        // Check if all players counts will be increased
+        else if ($random == 'inc_all') {
             foreach ($data->player as $players) {
                 if ($players->count + 1 >= $data->count) {
                     $stop = true;
@@ -197,7 +201,9 @@ class GameController extends Controller
                     $players->increment('count');
                 }
             }
-        } else if ($random == 'dec_one') {
+        }
+        // Check if player count will be decreased
+        else if ($random == 'dec_one') {
             $display[] = $player->name;
 
             if ($player->count <= 0) {
@@ -221,7 +227,9 @@ class GameController extends Controller
 
                 $player->decrement('count');
             }
-        } else if ($random == 'bomb' && $data->bomb == 1) {
+        }
+        // Check for bomb (all players need to drink a shot)
+        else if ($random == 'bomb' && $data->bomb == 1) {
             foreach ($data->player as $players) {
                 $count[] = [
                     'id'    => $players->id,
@@ -235,7 +243,9 @@ class GameController extends Controller
 
             $stop = true;
             $audio = 'bomb';
-        } else if ($random == 'noone') {
+        }
+        // Nothing is happening
+        else if ($random == 'noone') {
             $count = $player->count;
         }
 

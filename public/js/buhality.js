@@ -1,8 +1,10 @@
 let run;
 
+// Add new player input
 function player() {
     const player = $(".player_list").find(".input_player");
 
+    // Can't add new player inputs more than 10
     if (player.length <= 9) {
         const add_player =
             '<div class="input_player">' +
@@ -14,36 +16,43 @@ function player() {
     }
 }
 
+// Remove player input
 function player_remove(value) {
     const player = $(".player_list").find(".input_player");
 
+    // If player inputs aren't below two, allowed to remove
     if (player.length > 2) {
         const parent = value.parentNode;
 
-        if (parent.nextElementSibling.className == 'help-block')
+        if (parent.nextElementSibling && parent.nextElementSibling.className != 'input_player')
             parent.nextElementSibling.remove();
 
         value.parentNode.remove();
     }
 }
 
+//  Run the game and waiting for the actions
 function game() {
     $.get(base + "game/action", function (result) {
         const data = jQuery.parseJSON(result);
         const display = $(".random").html(data.display).show();
         const count = data.count;
 
+        // Game is stopped.
         if (data.stop) {
+            // Play an audio if necessary
             if (data.audio.length) {
                 new Audio(base + 'audio/' + data.audio + '.mp3').play();
             }
 
+            // Display random player and action
             display;
             stop_game();
         } else {
             display.delay(2000).fadeOut("slow");
         }
 
+        // Update player count
         if (Array.isArray(data.count)) {
             count.forEach((e) => {
                 $("#memb_" + e.id).text(e.count);
@@ -54,6 +63,7 @@ function game() {
     });
 }
 
+// Set the game to refresh every 3sec
 function set_game() {
     clearInterval(run);
     game();
@@ -62,12 +72,14 @@ function set_game() {
     $(".pause").show();
 }
 
+// After coutdown start the game
 function run_game() {
     $(".reset").hide();
     $(".continue").hide();
     $(".random").hide();
     $("#pause").hide();
 
+    // Countdown
     $('.random').fadeOut('slow', function(){
         $(this).html(3).show().fadeOut('slow', function(){
             $(this).html(2).show().fadeOut('slow', function(){
@@ -77,9 +89,9 @@ function run_game() {
             });
         });
     });
-    //console.log("Starting game");
 }
 
+// Pause the game
 function pause_game(act) {
     $(".pause").hide();
     $(".random").hide();
@@ -87,49 +99,47 @@ function pause_game(act) {
     $(".continue").show();
 
     clearInterval(run);
-    //console.log("Game paused");
 }
 
+// Stop the game
 function stop_game() {
     $(".reset").show();
     $(".pause").hide();
     clearInterval(run);
-    //console.log("Game paused. Waiting for action..");
 }
 
+// Start next round
 function next_round() {
     $(".reset").hide();
     $(".random").hide();
     $(".refresh").text(0);
 
     set_game();
-    //console.log("Next round");
 }
 
+// Reset players count (except shots)
 function reset_counter() {
     $.get(base + 'game/reset', function (data) {
         if (data) {
             stop_game();
             $(".memb_counter .shots").text(0);
             run_game();
-            //console.log("Counter resets.");
         }
     });
 }
 
+// Refresh game statistics and show modal (shots)
 $("#update_stats").click(function(){
     $.get(base + 'game/stats', function (data) {
         if (data) {
             $('#show_stats').html(data);
-            //console.log("Update statistics");
         }
     });
 });
 
+// Check if user is in /game page and start new game
 $(document).ready(function () {
     if (window.location.pathname == "/game") {
         run_game();
     }
-
-    $("#rules").modal("hide");
 });
