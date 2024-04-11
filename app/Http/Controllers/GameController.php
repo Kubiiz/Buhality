@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateGameRequest;
+use App\Http\Requests\GameRequest;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Player;
+use Illuminate\Validation\Rule;
 use Auth;
 
 class GameController extends Controller
@@ -33,18 +34,9 @@ class GameController extends Controller
     }
 
     // Creating new game
-    public function store(Request $request)
+    public function store(GameRequest $request)
     {
-        // Validate requests
-        $request->validate([
-            'title'     => 'required|min:3|max:20',
-            'player'    => 'required|min:2|max:10',
-            'player.*'  => 'required|min:3|distinct',
-            'count'     => 'required|numeric|between:5,15',
-            'bomb'      => 'in:1',
-        ]);
-
-        // Complete previous games if exists
+        // Complete previous game if exists
         Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);
 
         // Create new game
@@ -80,7 +72,7 @@ class GameController extends Controller
     }
 
     // Update game
-    public function update(Request $request)
+    public function update(GameRequest $request)
     {
         $data = Game::findOrFail($request->id);
 
@@ -89,50 +81,28 @@ class GameController extends Controller
             return back();
         }
 
-        // Validate requests
-        if (is_array($request['pl'])) {
-            if (count($request['pl']) < 2) {
-                $fields['pl'] = '';
-                $rules['pl'] = 'required';
-            } else {
-                foreach ($request['pl'] as $key => $d) {
-                    $fields['pl' . $key] = $d;
-                    $rules['pl' . $key] = 'required|min:3|max:15';
-                }
-            }
-        }
-        else {
-            $fields['pl'] = '';
-            $rules['pl'] = 'required';
-        }
-
-        $fields['title'] = $request['title'];
-        $rules['title'] = 'required|min:3|max:20';
-        $fields['count'] = $request['count'];
-        $rules['count'] = 'required|numeric|min:5|max:15';
-
-        $validator = Validator::make($fields, $rules);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        foreach ($data->player as $player) {
-            if (!isset($request['pl'][$player->id])) {
-                $player->delete();
-            } else {
-                $player->update(['name' => $request['pl'][$player->id]]);
-            }
-        }
-
+        // Update game
         $data->update([
             'title'     => $request->title,
             'count'     => $request->count,
-            'bomb'      => $request->bomb ? 1 : null,
+            'bomb'      => $request->bomb,
         ]);
 
+        // Delete game players if not exists anymore
+        $notIn = Player::where('game_id', $data->id)->whereNotIn('name', $request->player)->delete();
+
+        // Create new game players if is added new
+        foreach ($request->player as $key => $value) {
+            $player = Player::where('game_id', $data->id)->where('name', $value)->first();
+
+            if (!$player)
+                Player::create([
+                    'game_id'   => $data->id,
+                    'name'      => $value,
+                ]);
+        }
+
         return back()->with('status', 'Spēle izlabota!');
-        //return dd($request);
     }
 
     // Show user games

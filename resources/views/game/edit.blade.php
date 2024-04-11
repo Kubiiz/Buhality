@@ -26,29 +26,35 @@
                 @endif
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group player_list">
             <label class="col-sm-3">Dalībnieki</label>
             <div class="col-sm-9">
-                <span class="label label-success pull-left add" onclick="add_player('player');">Pievienot</span> <small class="pull-right">Dalībnieku skaits no <b>2</b> līdz <b>10</b></small>
+                <span class="label label-success pull-left add" onclick="player();">Pievienot</span> <small class="pull-right">Dalībnieku skaits no <b>2</b> līdz <b>10</b></small>
 
-                @if ($errors->has('pl'))
+                @if ($errors->has('player'))
                     <div class="clearfix"></div>
                     <span class="text-danger">
-                        <strong>Jābūt vismaz 2 spēlētājiem</strong>
+                        <strong>{{ $errors->first('player') }}</strong>
                     </span>
                 @endif
 
-                @foreach ($players as $player)
-                        <div id="pl{{ $player->id }}" class="{{ $errors->has('pl'.$player->id) ? 'has-error' : '' }}">
-                            <div class="m"><input value="{{ $player->name }}" type="text" class="form-control" name="pl[{{ $player->id }}]"><span class="label label-danger pull-right" onclick="remove_player('pl{{ $player->id }}');">Noņemt</span></div>
-
-                            @if ($errors->has('pl'.$player->id))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('pl'.$player->id) }}</strong>
-                                </span>
-                            @endif
+                @foreach (old('player', $players) as $key => $value)
+                    @php
+                        $newvalue = is_object($value) ? $value->name : $value;
+                    @endphp
+                    <div class="{{ $errors->has('player.'.$key) ? 'has-error' : '' }}">
+                        <div class="input_player">
+                            <input value="{{ old('player.'.$key, $newvalue) }}" type="text" class="form-control" name="player[]">
+                            <span class="label label-danger pull-right" onclick="player_remove(this);">Noņemt</span>
                         </div>
-                    @endforeach
+
+                         @if ($errors->has('player.'.$key))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('player.'.$key) }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                @endforeach
 
                 <div id="show_players"></div>
             </div>

@@ -44,10 +44,14 @@
                         <strong>{{ $errors->first('player') }}</strong>
                     </span>
                 @endif
+
                 @if (old('player'))
                     @foreach (old('player') as $key => $value)
-                        <div id="player_{{ $key }}" class="player_input {{ $errors->has('player.'.$key) ? 'has-error' : 'll' }}">
-                            <div class="input_player"><input value="{{ $value }}" type="text" class="form-control" name="player[]"><span class="label label-danger pull-right" onclick="player_remove({{ $key }});">Noņemt</span></div>
+                        <div class="{{ $errors->has('player.'.$key) ? 'has-error' : '' }}">
+                            <div class="input_player">
+                                <input value="{{ $value }}" type="text" class="form-control" name="player[]">
+                                <span class="label label-danger pull-right" onclick="player_remove(this);">Noņemt</span>
+                            </div>
 
                             @if ($errors->has('player.'.$key))
                                 <span class="help-block">

@@ -1,29 +1,30 @@
-let i = 0, run;
-const add_players = $("#add_players");
+let run;
 
 function player() {
-    i++;
-    const player = $(".player_list").find(".player_input");
+    const player = $(".player_list").find(".input_player");
 
     if (player.length <= 9) {
-        const add_player = '<div id="player_' + i + '" class="player_input">' +
-                                '<input type="text" class="form-control" name="player[]">' +
-                                '<span class="label label-danger pull-right" onclick="player_remove(' + i + ');">' +
-                                    'Noņemt' +
-                                '</span>' +
-                            '</div>';
+        const add_player =
+            '<div class="input_player">' +
+                '<input type="text" class="form-control" name="player[]">' +
+                '<span class="label label-danger pull-right" onclick="player_remove(this);">Noņemt</span>' +
+            '</div>';
 
         $("#show_players").append(add_player);
     }
 }
 
 function player_remove(value) {
-    const player = $(".player_list").find(".player_input");
+    const player = $(".player_list").find(".input_player");
 
-    if (player.length > 2)
-        $('#player_' + value).remove();
+    if (player.length > 2) {
+        const parent = value.parentNode;
 
-    return;
+        if (parent.nextElementSibling.className == 'help-block')
+            parent.nextElementSibling.remove();
+
+        value.parentNode.remove();
+    }
 }
 
 function game() {
