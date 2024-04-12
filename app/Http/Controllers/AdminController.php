@@ -5,23 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Game;
+use App\Models\Player;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display admin page
     public function index()
     {
-        return 'Admin';
+        $users = User::count();
+        $games = Game::count();
+        $players = Player::count();
+        $shots = Player::sum('shots');
+
+        return view('admin.index', compact('users', 'games', 'players', 'shots'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Display Information page
+    public function info()
     {
-        //
+        return view('admin.info');
     }
 
     /**

@@ -1,6 +1,6 @@
 <section>
      <p class="alert alert-info">
-        {{ __("Variet atjaunojiet savu lietotājvārdu un/vai epastu.") }}
+        {{ __("Variet atjaunot savu lietotājvārdu un/vai epastu.") }}
      </p>
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
