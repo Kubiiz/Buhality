@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('icon');
             $table->longText('content');
+            $table->integer('visible')->nullable();
             $table->foreignIdFor(User::class, 'editor');
             $table->timestamps();
         });

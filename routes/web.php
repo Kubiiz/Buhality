@@ -15,7 +15,7 @@ Route::post('info', [PageController::class, 'contact'])->name('info.contact');
 
 Route::middleware('auth')->group(function () {
     Route::get('games', [GameController::class, 'games'])->name('games');
-    
+
     Route::get('new-game', [GameController::class, 'create'])->name('newgame');
     Route::post('new-game', [GameController::class, 'store'])->name('newgame.store');
 
@@ -38,6 +38,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware('admin')->prefix('admin')->name('admin.')->group( function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('info', [AdminController::class, 'info'])->name('info');
+    Route::get('info/create', [AdminController::class, 'create'])->name('info.create');
+    Route::post('info/create', [AdminController::class, 'store'])->name('info.store');
+    Route::get('{id}/edit', [AdminController::class, 'edit'])->name('info.edit');
+    Route::post('{id}/edit', [AdminController::class, 'update'])->name('info.update');
+    Route::get('{id}/delete', [AdminController::class, 'destroy'])->name('info.destroy');
 });
 
 

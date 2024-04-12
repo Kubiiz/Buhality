@@ -11,5 +11,15 @@ class Info extends Model
 
     protected $table = 'information';
 
-    protected $fillable = ['title', 'icon', 'content', 'editor'];
+    protected $fillable = ['title', 'icon', 'content', 'visible', 'editor'];
+
+    public function info()
+    {
+        return $this->hasMany(Info::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

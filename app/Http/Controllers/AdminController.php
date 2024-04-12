@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\admin;
+use App\Http\Requests\InfoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Game;
 use App\Models\Player;
+use App\Models\Info;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -25,46 +27,60 @@ class AdminController extends Controller
     // Display Information page
     public function info()
     {
-        return view('admin.info');
+        $data = Info::all();
+
+        return view('admin.info.index', compact('data'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Add new Information page
+    public function create()
     {
-        //
+        return view('admin.info.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(admin $admin)
+    // Create Information page
+    public function store(InfoRequest $request)
     {
-        //
+        Info::create([
+            'title'     => $request->title,
+            'icon'      => $request->icon,
+            'content'   => $request->content,
+            'visible'   => $request->visible
+        ]);
+
+        return redirect('/admin/info');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(admin $admin)
+    // Show Information page
+    public function edit($id)
     {
-        //
+        $data = Info::where(['id' => $id])->firstOrFail();
+
+        return view('admin.info.edit', compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, admin $admin)
+    // Edit Information page
+    public function update(InfoRequest $request)
     {
-        //
+        $data = Info::findOrFail($request->id);
+
+        $data->update([
+            'title'     => $request->title,
+            'icon'      => $request->icon,
+            'content'   => $request->content,
+            'visible'   => $request->visible,
+            'editor'    => Auth::user()->id,
+        ]);
+
+        return back()->with('status', 'Informācijas sadaļa izlabota!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(admin $admin)
+    // Delete Information page
+    public function destroy($id)
     {
-        //
+        $data = Info::where(['id' => $id])->firstOrFail();
+        $data->delete();
+
+        return redirect()->back()->with('deleted', 'Informāciju sadaļa izdzēsta!');
     }
 }
