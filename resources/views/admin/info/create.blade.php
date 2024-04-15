@@ -33,8 +33,9 @@
         <div class="form-group{{ $errors->has('visible') ? ' has-error' : '' }}">
             <label class="col-sm-3">Publiski redzams</label>
             <div class="col-md-9">
-                <div class="checkbox">
+                <div>
                     <label><input type="checkbox" style="margin-top:-10px" name="visible" value="1" {{ old('visible') ? 'checked' : '' }}></label>
+                    <small>Sadaļa tiks paradīta "Informācijas" sadaļā</small>
 
                     @if ($errors->has('visible'))
                         <span class="help-blockr">

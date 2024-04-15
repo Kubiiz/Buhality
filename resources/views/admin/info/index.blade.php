@@ -16,6 +16,11 @@
             @foreach($data as $info)
                 <li class="list-group-item">
                     <i class="fa {{ $info->icon }} fa-lg text-primary text-center" style="width:15px;margin-right:5px"></i> {{ $info->title }}
+                    @if($info->visible == 1)
+                        <span class="label label-success">Publisks</span>
+                    @else
+                        <span class="label label-default">Neredzams</span>
+                    @endif
                     <div class="pull-right">
                         <a href="{{ route('admin.info.edit', $info->id) }}" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> Labot</a>
                         <a href="{{ route('admin.info.destroy', $info->id) }}" onclick="if(confirm('Dzēst informācijas sadaļu?')){return true;}else{return false;}" class="btn btn-xs btn-danger"><i class="fa fa-pencil"></i> Dzēst</a>
