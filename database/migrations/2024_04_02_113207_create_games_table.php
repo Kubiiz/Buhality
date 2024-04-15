@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->string('title');
             $table->integer('count');
             $table->integer('bomb')->nullable();

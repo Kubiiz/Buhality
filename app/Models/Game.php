@@ -44,7 +44,7 @@ class Game extends Model
         shuffle($array);
         $random = array_rand($array);
 
-       return $array[$random];
+        return $array[$random];
     }
 
     // Get a random action and display it

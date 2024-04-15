@@ -13,6 +13,10 @@
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
+        @else
+            <div class="alert alert-info">
+                Labojot kādu dalībnieku, tā statistika tiks dzēsta!
+            </div>
         @endif
 
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">

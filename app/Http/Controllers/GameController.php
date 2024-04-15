@@ -229,20 +229,25 @@ class GameController extends Controller
             }
         }
         // Check for bomb (all players need to drink a shot)
-        else if ($random == 'bomb' && $data->bomb == 1) {
-            foreach ($data->player as $players) {
-                $count[] = [
-                    'id'    => $players->id,
-                    'count' => $data->count,
-                ];
+        else if ($random == 'bomb') {
+            if ($data->bomb == 1) {
+                foreach ($data->player as $players) {
+                    $count[] = [
+                        'id'    => $players->id,
+                        'count' => $data->count,
+                    ];
 
-                $players->increment('shots');
+                    $players->increment('shots');
+                }
+
+                $data->player()->update(['count' => 0]);
+
+                $stop = true;
+                $audio = 'bomb';
+            } else {
+                $random = 'noone';
+                $count = $player->count;
             }
-
-            $data->player()->update(['count' => 0]);
-
-            $stop = true;
-            $audio = 'bomb';
         }
         // Nothing is happening
         else if ($random == 'noone') {
