@@ -196,10 +196,18 @@
 .stats {
     font-size: 13px;
 }
+
 #alko {
-	background: url('../images/alko.png') repeat-x;
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 	height: 30px;
+}
+
+#alko.lang-lv {
+	background: url('../images/alko.png') repeat-x;
+}
+
+#alko.lang-en {
+	background: url('../images/alko-en.png') repeat-x;
 }

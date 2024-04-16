@@ -292,6 +292,6 @@ class GameController extends Controller
         $data->delete();
         $data->player()->delete();
 
-        return redirect()->back()->with('deleted', 'Spēle izdzēsta!');
+        return redirect()->back()->with('deleted', __('Game deleted!'));
     }
 }

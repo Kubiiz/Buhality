@@ -3,7 +3,7 @@
 @section('content')
     <div class="form-horizontal st">
         <div class="form-group head">
-            <i class="fa fa-sign-in fa-lg"></i>&nbsp; Ienākt profilā
+            <i class="fa fa-sign-in fa-lg"></i>&nbsp; {{ __('Login to profile') }}
         </div>
         <div class="card">
             <div class="card-body">
@@ -11,7 +11,7 @@
                     @csrf
 
                     <div class="form-group">
-                        <label for="email" class="col-md-4 control-label">{{ __('E-Mail Address') }}</label>
+                        <label for="email" class="col-md-4 control-label">{{ __('Email') }}</label>
 
                         <div class="col-md-6">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
@@ -46,7 +46,7 @@
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    Atcerēties mani
+                                    {{ __('Remember me') }}
                                 </label>
 
                                 @if (Route::has('password.request'))

@@ -3,11 +3,11 @@
 @section('content')
     <div class="form-horizontal st">
         <div class="form-group head history">
-            <i class="fa fa-history fa-lg"></i>&nbsp; Manas spēles
+            <i class="fa fa-history fa-lg"></i>&nbsp; {{ __("My games") }}
         </div>
         <div class="form-group stats">
-            <i class="fa fa-trophy"></i> Kopā <span class="text-primary">{{ $data->count() }}</span> spēles<br>
-            <i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $shots }}</span> šoti
+            <i class="fa fa-trophy"></i> {{ __("Total") }} <span class="text-primary">{{ $data->count() }}</span> spēles<br>
+            <i class="fa fa-glass"></i> {!! __("<span class='text-primary'>:shots</span> shots consumed", ['shots'=> $shots]) !!}
         </div>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
@@ -19,9 +19,9 @@
                             <i class="fa fa-chevron-right"></i> {{ $active->title }}
                         </a>
                         <div class="pull-right right">
-                            <a href="{{ url('/game') }}" class="label label-success"><i class="fa fa-play"></i> Turpināt</a>
-                            <a href="{{ url('/game/' . $active->id . '/edit') }}" class="label label-warning"><i class="fa fa-pencil"></i> Labot</a>
-                            <a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}" class="label label-danger"><i class="fa fa-stop"></i>&nbsp; Beigt</a>
+                            <a href="{{ route('game.index') }}" class="label label-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
+                            <a href="{{ route('game.edit', $active->id) }}" class="label label-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
+                            <a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")' class="label label-danger"><i class="fa fa-stop"></i>&nbsp; {{ __("End") }}</a>
                         </div>
                     </h4>
                 </div>
@@ -29,11 +29,11 @@
                     <div class="panel-body">
 						<div class="pull-left">
                         @foreach($active->player as $player)
-                            {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> šoti<br>
+                            {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> {{ __("shots") }}<br>
                         @endforeach
 						</div>
 						<div class="pull-right">
-							<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $active->player()->sum('shots') }}</span> šoti</i>
+							<i><i class="fa fa-glass"></i> {!! __("<span class='text-primary'>:shots</span> shots consumed", ['shots'=> $active->player()->sum('shots')]) !!}</i>
 						</div>
                     </div>
                 </div>
@@ -55,11 +55,11 @@
                             </a>
                             <div class="pull-right right">
                             @if (empty($active))
-                                <a href="{{ url('/game/' . $game->id . '/continue') }}" class="label label-success"><i class="fa fa-play"></i> Turpināt</a>
+                                <a href="{{ route('game.continue', $game->id) }}" class="label label-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
                             @endif
-                            <a href="{{ url('/game/' . $game->id . '/edit') }}" class="label label-warning"><i class="fa fa-pencil"></i> Labot</a>
-                            <a href="{{ url('/game/' . $game->id . '/delete') }}" onclick="if( confirm( 'Dzēst spēli?' ) ) {return true;}else{return false;}" class="label label-default">
-                                <i class="fa fa-times"></i> Dzēst
+                            <a href="{{ route('game.edit', $game->id) }}" class="label label-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
+                            <a href="{{ route('game.destroy', $game->id) }}" onclick='return confirm("{{ __("Are you sure you want to delete this game?") }}")' class="label label-default">
+                                <i class="fa fa-times"></i> {{ __("Delete") }}
                             </a>
                             </div>
                         </h4>
@@ -68,7 +68,7 @@
                         <div class="panel-body">
 							<div class="pull-left">
                             @foreach($game->player as $player)
-                                {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> šoti<br>
+                                {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> {{ __("shots") }}<br>
                             @endforeach
 							</div>
 							<div class="pull-right right">
@@ -77,7 +77,7 @@
 									<div class="date">{{ $game->created_at }}</div>
 								</div>
 								<div>
-									<i><i class="fa fa-glass"></i> Izdzerti <span class="text-primary">{{ $game->player()->sum('shots') }}</span> šoti</i>
+									<i class="pull-right"><i class="fa fa-glass"></i> {!! __("<span class='text-primary'>:shots</span> shots consumed", ['shots'=> $game->player()->sum('shots')]) !!}</i>
 								</div>
                             </div>
                         </div>
@@ -85,8 +85,9 @@
                 </div>
             @endforeach
         @else
-            <br>
-            <div class="alert alert-warning">Tu neesi izspēlējis nevienu spēli!</div>
+        <div class="alert alert-info">
+            {{ __('You haven`t added or played any games.') }}
+        </div>
         @endif
         </div>
     </div>

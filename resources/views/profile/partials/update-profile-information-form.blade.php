@@ -1,6 +1,6 @@
 <section>
      <p class="alert alert-info">
-        {{ __("Variet atjaunot savu lietotājvārdu un/vai epastu.") }}
+        {{ __("You can renew your username and/or email.") }}
      </p>
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
@@ -17,7 +17,7 @@
         @endif
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            <label class="col-sm-3">Vārds</label>
+            <label class="col-sm-3">{{ __('Name') }}</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name">
                 @if ($errors->has('name'))
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label class="col-sm-3">Epasts</label>
+            <label class="col-sm-3">{{ __('Email') }}</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="email" value="{{ old('email', $user->email) }}" required autofocus autocomplete="email">
                 @if ($errors->has('email'))
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Saglabāt</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {{ __('Save') }}</button>
             </div>
         </div>
     </form>

@@ -31,7 +31,7 @@ class GameTest extends TestCase
             ->assertRedirect('/game');
     }
 
-    // Test if test can get right games response
+    // Test if can get right games json response
     public function test_can_get_games_reponse(): void
     {
         $user = User::factory()->create();

@@ -3,18 +3,18 @@
 @section('content')
 <div class="form-horizontal st info">
 <div class="form-group head">
-    <i class="fa fa-gear fa-lg"></i>&nbsp; Kontroles panelis
+    <i class="fa fa-gear fa-lg"></i>&nbsp; {{ __('Control panel') }}
 </div>
 <div class="form-group">
     <ul class="nav nav-tabs">
-        <li class="{{ Request::route()->named('admin.index') ? 'active' : '' }}"><a href="{{ route('admin.index') }}"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; Statistika</a></li>
+        <li class="{{ Request::route()->named('admin.index') ? 'active' : '' }}"><a href="{{ route('admin.index') }}"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; {{ __('Statistics') }}</a></li>
         <li class="dropdown{{ Request::route()->named('admin.info') || Request::route()->named('admin.info.*') ? ' active' : '' }}">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="cursor:pointer">
-                <i class="fa fa-info fa-lg"></i>&nbsp; Informācija <span class="caret"></span>
+                <i class="fa fa-info fa-lg"></i>&nbsp; {{ __('Information') }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{{ route('admin.info') }}"><i class="fa fa-bars fa-lg"></i>&nbsp; Skatīt sadaļas</a></li>
-                <li><a href="{{ route('admin.info.create') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; Pievienot sadaļu</a></li>
+                <li><a href="{{ route('admin.info') }}"><i class="fa fa-bars fa-lg"></i>&nbsp; {{ __('Information sections') }}</a></li>
+                <li><a href="{{ route('admin.info.create') }}"><i class="fa fa-plus fa-lg"></i>&nbsp; {{ __('Add section') }}</a></li>
             </ul>
           </li>
     </ul>

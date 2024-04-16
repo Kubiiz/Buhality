@@ -34,6 +34,6 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('profile.updated', 'Profila informācija atjaunota!');
+        return Redirect::route('profile.edit')->with('profile.updated', __('Profile information updated!'));
     }
 }

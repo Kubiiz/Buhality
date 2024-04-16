@@ -27,10 +27,10 @@ class Game extends Model
     public static function random(int $bomb = null) :string
     {
         $percentages = [
-            'inc_one'   => 40,
+            'inc_one'   => 50,
             'inc_two'   => 10,
             'inc_all'   => 10,
-            'noone'     => 5,
+            'noone'     => 4,
             'dec_one'   => 25,
             'bomb'      => $bomb,
         ];
@@ -51,13 +51,13 @@ class Game extends Model
     public static function action(string $random, array $players = null) :string
     {
         if ($random == 'noone')
-            return 'Neviens';
+            return __('Noone');
         elseif ($random == 'bomb')
-            return 'BOMBA<br /><span class="x2 text-primary">Dzer visi!</span>';
+            return __('BOMB') . '<br /><span class="x2 text-primary">' . __('Everybody drink!') . '</span>';
         elseif ($random == 'drink')
-            return "<span class='x2 text-primary'>Dzer</span> " . implode(', ', $players);
+            return "<span class='x2 text-primary'>" . __('Drink') . "</span> " . implode(', ', $players);
         else
-            return ($random == 'inc_all' ? 'Visiem' : $players[0]) . " <span class='x2 text-" . ($random == 'dec_one' ? "success plus'>-" : "danger plus'>+") . ($random == 'inc_two' ? 2 : 1) . "</span>";
+            return ($random == 'inc_all' ? __('Everybody') : $players[0]) . " <span class='x2 text-" . ($random == 'dec_one' ? "success plus'>-" : "danger plus'>+") . ($random == 'inc_two' ? 2 : 1) . "</span>";
     }
 
     public function user()

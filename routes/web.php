@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Admin;
 
 Route::get('/', [PageController::class, 'home'])->name('dashboard');
-Route::get('test', [PageController::class, 'test'])->name('test');
 
 Route::get('info', [PageController::class, 'info'])->name('info');
 Route::post('info', [PageController::class, 'contact'])->name('info.contact');
@@ -44,6 +43,14 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group( function () 
     Route::post('{id}/edit', [AdminController::class, 'update'])->name('info.update');
     Route::get('{id}/delete', [AdminController::class, 'destroy'])->name('info.destroy');
 });
+
+Route::get('/lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'lv'])) {
+        session(['language' => $locale]);
+    }
+
+    return back();
+})->name('language');;
 
 
 require __DIR__.'/auth.php';

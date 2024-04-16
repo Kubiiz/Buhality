@@ -19,19 +19,6 @@ class PageController extends Controller
         return view('home');
     }
 
-    public function test()
-    {
-        $players = [];
-
-        $players[] = 'Dāvis';
-        $players[] = 'Edgars';
-
-        $random = Game::action(Game::random(), $players);
-        //return Game::find(3)->action($random, Player::random($players));
-        //dd($players);
-        return $random;
-    }
-
 	public function info()
     {
         $data = Info::where('visible', 1)->get();
@@ -57,6 +44,6 @@ class PageController extends Controller
                             ->subject('Buhality kontaktu forma');
         });
 
-        return back()->with('success', 'Paldies! Jūsu ziņa nosūtīta!');
+        return back()->with('success', __('Thank you! Your message has been sent!'));
     }
 }

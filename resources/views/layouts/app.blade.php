@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Ballīšu spēle">
+    <meta name="description" content="{{ __('Party game') }}">
     <meta name="keywords" content="Buhality, buha, buhāt, buba, bubāt, dzert, kost, ieraut, liet bākā">
     <meta name="author" content="Kubiiz (epasts - buhality@etr.lv)">
-    <title>Buhality - Ballīšu spēle</title>
+    <title>Buhality - {{ __('Party game') }}</title>
     <link rel="shortcut icon" href="{{ asset('images') }}/favicon.png" type="image/png" />
     <script>
-        const base = '{{ url('/') }}/';
+        const base = '{{ route('dashboard') }}/';
     </script>
     <script src="{{ asset('js/jquery.min.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
@@ -26,7 +26,7 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="{{ url('/') }}">
+					<a class="navbar-brand" href="{{ route('dashboard') }}">
 						<img class="m_logo" src="{{ asset('images') }}/m_logo.png" alt="" />
 						BUHALITY
 					</a>
@@ -40,27 +40,32 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 						<li class="nav-item">
-							<a href="{{ url('/info') }}"><i class="fa fa-info fa-lg text-info"></i>&nbsp; Informācija</a>
+							<a href="{{ route('info') }}"><i class="fa fa-info fa-lg text-info"></i>&nbsp; {{ __('Information') }}</a>
                         </li>
 						@if (!Auth::guest())
-                            <li><a href="{{ url('/new-game') }}"><i class="fa fa-plus fa-lg text-primary"></i>&nbsp; Jauna spēle</a></li>
+                            <li><a href="{{ route('newgame') }}"><i class="fa fa-plus fa-lg text-primary"></i>&nbsp; {{ __('New game') }}</a></li>
 
                             @if (request()->is('game'))
-                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg text-success"></i>&nbsp; Statistika</a></li>
+                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg text-success"></i>&nbsp; {{ __('Statistics') }}</a></li>
                             @elseif (count(Auth::user()->game->whereNull('ended')) > 0)
-                                <li><a href="{{ url('/game') }}"><i class="fa fa-arrow-right fa-lg text-success"></i>&nbsp; Turpināt spēli</a></li>
-                                <li><a href="{{ url('/game/stop') }}" onclick="if( confirm( 'Beigt spēli?' ) ) {return true;}else{return false;}"><i class="fa fa-stop fa-lg text-warning"></i>&nbsp; Beigt spēli</a></li>
+                                <li><a href="{{ route('game.index') }}"><i class="fa fa-arrow-right fa-lg text-success"></i>&nbsp; {{ __('Continue') }}</a></li>
+                                <li><a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")'><i class="fa fa-stop fa-lg text-warning"></i>&nbsp; {{ __('End game') }}</a></li>
                             @endif
                         @endif
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <p class="navbar-text navbar-left lang">
+                            <a href="{{ route('language', 'lv') }}" class="{{ app()->isLocale('lv') ? 'active' : '' }}">{{ app()->isLocale('lv') ? '+' : '' }}LV</a>
+                            <a href="{{ route('language', 'en') }}" class="{{ app()->isLocale('en') ? 'active' : '' }}">{{ app()->isLocale('en') ? '+' : '' }}EN</a>
+                        </p>
+
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}"><i class="fa fa-sign-in fa-lg"></i> {{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}"><i class="fa fa-sign-in fa-lg text-info"></i> {{ __('Login') }}</a>
                             </li>
                             <li class="nav-item">
-                               <a class="nav-link" href="{{ route('register') }}"><i class="fa fa-user-plus fa-lg"></i> {{ __('Register') }}</a>
+                               <a class="nav-link" href="{{ route('register') }}"><i class="fa fa-user-plus fa-lg text-success"></i> {{ __('Register') }}</a>
                             </li>
                         @else
                             <li class="dropdown">
@@ -70,11 +75,11 @@
 								<ul class="dropdown-menu" role="menu">
 									<li>
 										@if (Auth::user()->group == 1)
-											<a href="{{ url('/admin') }}"><i class="fa fa-gear"></i> Kontroles panelis</a>
+											<a href="{{ route('admin.index') }}"><i class="fa fa-gear"></i> {{ __('Control panel') }}</a>
 										@endif
 
-										<a href="{{ url('/games') }}"><i class="fa fa-history"></i> Manas spēles</a>
-                                        <a href="{{ url('/profile') }}"><i class="fa fa-pencil"></i> Labot profilu</a>
+										<a href="{{ route('games') }}"><i class="fa fa-history"></i> {{ __('My games') }}</a>
+                                        <a href="{{ route('profile.edit') }}"><i class="fa fa-pencil"></i> {{ __('Edit profile') }}</a>
 										<a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 											<i class="fa fa-sign-out"></i> {{ __('Logout') }}
 										</a>
@@ -92,7 +97,7 @@
 
         <main class="py-4">
             @yield('content')
-			<div id="alko"></div>
+			<div id="alko" class="lang-{{ app()->getLocale() }}"></div>
         </main>
     </div>
 </body>

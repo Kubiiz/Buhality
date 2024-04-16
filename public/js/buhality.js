@@ -1,7 +1,7 @@
 let run;
 
 // Add new player input
-function player() {
+function player(text) {
     const player = $(".player_list").find(".input_player");
 
     // Can't add new player inputs more than 10
@@ -9,7 +9,7 @@ function player() {
         const add_player =
             '<div class="input_player">' +
                 '<input type="text" class="form-control" name="player[]">' +
-                '<span class="label label-danger pull-right" onclick="player_remove(this);">Noņemt</span>' +
+                '<span class="label label-danger pull-right" onclick="player_remove(this);">' + text + '</span>' +
             '</div>';
 
         $("#show_players").append(add_player);

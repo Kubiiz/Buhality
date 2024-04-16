@@ -72,7 +72,7 @@ class AdminController extends Controller
             'editor'    => Auth::user()->id,
         ]);
 
-        return back()->with('status', 'Informācijas sadaļa izlabota!');
+        return back()->with('status', __('Information section updated!'));
     }
 
     // Delete Information page
@@ -81,6 +81,6 @@ class AdminController extends Controller
         $data = Info::where(['id' => $id])->firstOrFail();
         $data->delete();
 
-        return redirect()->back()->with('deleted', 'Informāciju sadaļa izdzēsta!');
+        return redirect()->back()->with('deleted', __('Information section deleted!'));
     }
 }

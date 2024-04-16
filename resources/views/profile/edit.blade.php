@@ -5,7 +5,7 @@
     {{ csrf_field() }}
 
     <div class="form-group head">
-        <i class="fa fa-user fa-lg"></i>&nbsp; Labot profilu</i>
+        <i class="fa fa-user fa-lg"></i>&nbsp; {{ __("Edit profile") }}</i>
     </div>
     <div class="form-group">
         @include('profile.partials.update-profile-information-form')

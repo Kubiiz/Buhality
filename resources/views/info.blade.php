@@ -22,7 +22,7 @@
 			<br /><br />
 		<div class="form-group useform">
 			<center>
-				<i class="fa fa-user"></i>&nbsp;Saziņa ar <span><b>izstrādātāju</b></span>
+				<i class="fa fa-user"></i>&nbsp;{{ __('Communication with') }} <b>{{ __('developer') }}</b>
 			</center>
         </div>
 
@@ -33,9 +33,9 @@
         @endif
 
         <div class="card-body">
-            <form method="POST" action="{{ url('info') }}">
+            <form method="POST" action="{{ route('info.contact') }}">
 				@csrf
-				<label for="email" class="col-md-4 control-label">Jūsu epasts</label>
+				<label for="email" class="col-md-4 control-label">{{ __('Your email') }}</label>
 				<div class="form-group col-md-7 {{ $errors->has('email') ? 'has-error' : '' }}">
 					<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="buhality@etr.lv" required>
 
@@ -46,9 +46,9 @@
                     @enderror
 				</div>
 
-				<label for="name" class="col-md-4 control-label">Jūsu vārds</label>
+				<label for="name" class="col-md-4 control-label">{{ __('Your name') }}</label>
 				<div class="form-group col-md-7 {{ $errors->has('name') ? 'has-error' : '' }}">
-					<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Jūsu vārds" required>
+					<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="{{ __('Your name') }}" required>
 
 					@error('name')
                         <span class="invalid-feedback" role="alert">
@@ -57,7 +57,7 @@
                     @enderror
 				</div>
 
-				<label for="comment" class="col-md-4 control-label">Ziņa</label>
+				<label for="comment" class="col-md-4 control-label">{{ __('Message') }}</label>
 				<div class="form-group col-md-7 {{ $errors->has('comment') ? 'has-error' : '' }}">
 					<textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
 					<span class="text-danger">{{ $errors->first('comment') }}</span>
@@ -66,7 +66,7 @@
 				<div class="form-group">
                     <div class="col-md-7 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-check"></i> Sūtīt
+                            <i class="fa fa-check"></i> {{ __('Send') }}
                         </button>
                     </div>
                 </div>
