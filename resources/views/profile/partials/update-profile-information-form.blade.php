@@ -1,6 +1,6 @@
 <section>
      <p class="alert alert-info">
-        {{ __("You can renew your username and/or email.") }}
+        {{ __("You can update your profile information.") }}
      </p>
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf

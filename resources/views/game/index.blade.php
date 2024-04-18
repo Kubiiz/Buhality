@@ -12,17 +12,21 @@
     </div>
     <div class="counter">
         <button onclick="reset_counter()" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> {{ __('Refresh') }}</button>
-        @foreach ($members as $memb)
-            <div class="memb_counter">
-                <div class="player" id="memb">{{ $memb->name }}</div> - <span class="text-primary shots refresh" id="memb_{{ $memb->id }}">{{ $memb->count }}</span>
-            </div>
-        @endforeach
+        <div class="list">
+            @foreach ($members as $memb)
+                <div class="memb_counter">
+                    <div class="player" id="memb">{{ $memb->name }}</div>&nbsp;- <span class="text-primary shots refresh" id="memb_{{ $memb->id }}">{{ $memb->count }}</span>
+                </div>
+            @endforeach
+        </div>
     </div>
 
     <div class="center">
         <div class="random"></div>
         <div style="display: none" id="pause">{{ __('Pause..') }}</div>
     </div>
+
+    <div class="right"> </div>
 
     <div class="modal fade" id="stats" tabindex="-1">
         <div class="modal-dialog" role="document">
