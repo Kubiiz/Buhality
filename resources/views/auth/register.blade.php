@@ -40,6 +40,21 @@
                         </div>
                     </div>
 
+                    <div class="form-group row{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+                        <label for="birth_date" class="col-md-4 control-label">{{ __('Birth date') }}</label>
+
+                        <div class="col-md-6">
+                            <input id="birth_date" type="date" class="form-control @error('birth_date') is-invalid @enderror"
+                                name="birth_date" value="{{ old('birth_date') }}" required autocomplete="birth_date">
+
+                            @error('birth_date')
+                                <span class="help-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
                         <label for="password" class="col-md-4 control-label">{{ __('Password') }}</label>
 

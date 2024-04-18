@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,8 +17,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $data = $request->user();
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $data,
+            'date' => Carbon::parse($data->birth_date)->format('Y-m-d'),
         ]);
     }
 
@@ -31,6 +35,8 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
+
+        $request->user()->birth_date = Carbon::parse($request->birth_date)->format('Y-m-d');
 
         $request->user()->save();
 

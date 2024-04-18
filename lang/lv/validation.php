@@ -24,7 +24,7 @@ return [
     'array' => 'Laukam jābūt masīvam.',
     'ascii' => 'Laukam drīkst saturēt tikai vienbaita alfa­numeriskos simbolus un simbolus.',
     'before' => 'Laukam jābūt datumam pirms :date.',
-    'before_or_equal' => 'Laukam jābūt datumam pirms vai vienādam ar :date.',
+    'before_or_equal' => 'Nevar norādīt vecumu, kas jaunāks par 18 gadiem.',
     'between' => [
         'array' => 'Laukam jābūt ar :min un :max vienībām.',
         'file' => 'Laukam jābūt starp :min un :max kilobaitiem.',

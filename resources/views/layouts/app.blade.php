@@ -101,5 +101,6 @@
             @yield('content')
         </div>
     </div>
+    <div id="alko" style="background: url('{{ asset('images') }}/alko-{{ app()->getLocale() }}.png')"></div>
 </body>
 </html>
