@@ -1,23 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <form class="form-horizontal st" role="form" method="POST" action="{{ route('newgame.store') }}">
+    <form class="form-horizontal form" role="form" method="POST" action="{{ route('newgame.store') }}">
         {{ csrf_field() }}
 
-        <div class="form-group head">
+        <h4 class="form-group head text-center">
             <i class="fa fa-plus fa-lg"></i>&nbsp; {{ __('Add new game') }}
-        </div>
+        </h4>
         @if($active)
-            <div class="form-group">
-                <div class="alert alert-info">
-                    {{ __('You have started the game!') }}
-                    <div class="pull-right warning">
-                        <a href="{{ route('game.index') }}" class="btn btn-sm btn-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
-                        <a href="{{ route('game.edit', $active->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
-                        <a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")' class="btn btn-sm btn-danger"><i class="fa fa-stop"></i>&nbsp; {{ __("End") }}</a>
-                    </div>
-                </div>
+        <div class="alert alert-info">
+            <div class="pull-left">{{ __('You have started the game!') }}</div>
+            <div class="pull-right">
+                <a href="{{ route('game.index') }}" class="btn btn-sm btn-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
+                <a href="{{ route('game.edit', $active->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
+                <a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")' class="btn btn-sm btn-danger"><i class="fa fa-stop"></i>&nbsp; {{ __("End") }}</a>
             </div>
+            <div class="clear"></div>
+        </div>
         @endif
 
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -81,9 +80,11 @@
         <div class="form-group{{ $errors->has('bomb') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __('Bomb') }}</label>
             <div class="col-md-9">
-                <div class="checkbox">
-                    <label><input type="checkbox" name="bomb" value="1" {{ old('bomb') ? 'checked' : '' }}></label>
-                    <span class="newbomba">{!! __('When the <i><strong>Bomb</strong></i> drops, everyone will have to drink') !!}</span>
+                <div>
+                    <label>
+                        <input type="checkbox" name="bomb" value="1" {{ old('bomb') ? 'checked' : '' }}>
+                    </label>
+                    <span class="bomb">{!! __('When the <strong>Bomb</strong> drops, everyone will have to drink') !!}</span>
                     @if ($errors->has('bomb'))
                         <span class="help-block">
                             <strong>{{ $errors->first('bomb') }}</strong>
@@ -94,7 +95,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                <button type="submit" name="st" class="btn btn-primary"><i class="fa fa-check"></i> {{ __('Done') }}</button>
+                <button type="submit" name="st" class="btn btn-primary pull-right"><i class="fa fa-check"></i> {{ __('Done') }}</button>
             </div>
         </div>
     </form>

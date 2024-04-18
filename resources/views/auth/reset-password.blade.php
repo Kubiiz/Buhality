@@ -1,39 +1,60 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+@extends('layouts.app')
+
+@section('content')
+    <form class="form-horizontal form" method="POST" action="{{ route('password.store') }}">
         @csrf
-
-        <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        <h4 class="form-group head text-center">
+            <i class="fa fa-unlock-alt fa-lg"></i>&nbsp; {{ __('Reset Password') }}
+        </h4>
+        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+            <label for="email" class="col-md-4 control-label">{{ __('Email') }}</label>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <div class="col-md-6">
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                    name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+
+                @error('email')
+                    <span class="help-block" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
+        <div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
+            <label for="password" class="col-md-4 control-label">{{ __('Password') }}</label>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div class="col-md-6">
+                <input id="password" type="password"
+                    class="form-control @error('password') is-invalid @enderror" name="password" required
+                    autocomplete="new-password">
+
+                @error('password')
+                    <span class="help-block" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
+        <div class="form-group row{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+            <label for="password-confirm" class="col-md-4 control-label">{{ __('Confirm Password') }}</label>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <div class="col-md-6">
+                <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                    required autocomplete="new-password">
+            </div>
+            @error('password_confirmation')
+                    <span class="help-block" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+            @enderror
         </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-check"></i> {{ __('Reset Password') }}
+                </button>
+            </div>
         </div>
     </form>
-</x-guest-layout>
+@endsection

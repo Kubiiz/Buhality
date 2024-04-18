@@ -44,6 +44,7 @@ class AdminController extends Controller
         Info::create([
             'title'     => $request->title,
             'icon'      => $request->icon,
+            'language'  => $request->language,
             'content'   => $request->content,
             'visible'   => $request->visible
         ]);
@@ -67,6 +68,7 @@ class AdminController extends Controller
         $data->update([
             'title'     => $request->title,
             'icon'      => $request->icon,
+            'language'  => $request->language,
             'content'   => $request->content,
             'visible'   => $request->visible,
             'editor'    => Auth::user()->id,

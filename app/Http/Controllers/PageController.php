@@ -21,7 +21,9 @@ class PageController extends Controller
 
 	public function info()
     {
-        $data = Info::where('visible', 1)->get();
+        $data = Info::where('visible', 1)
+                    ->where('language', app()->getLocale())
+                    ->get();
 
         return view('info', compact('data'));
     }
@@ -29,9 +31,9 @@ class PageController extends Controller
 	public function contact(Request $request)
 	{
         $request->validate([
-            'name'      => 'required',
+            'name'      => 'required|min:3',
             'email'     => 'required|email',
-            'comment'   => 'required'
+            'comment'   => 'required|min:15'
         ]);
 
         Mail::send('email', [

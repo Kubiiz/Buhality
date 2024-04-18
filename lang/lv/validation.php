@@ -33,7 +33,7 @@ return [
     ],
     'boolean' => 'Laukam jābūt patiesam vai nepatiesam.',
     'can' => 'Laukā ir neautorizēta vērtība.',
-    'confirmed' => 'Lauka apstiprinājums neatbilst.',
+    'confirmed' => 'Lauki nesakrīt',
     'current_password' => 'Nepareiza parole.',
     'date' => 'Laukam jābūt derīgam datumam.',
     'date_equals' => 'Laukam jābūt datumam, kas vienāds ar :date.',
@@ -69,7 +69,8 @@ return [
     ],
     'hex_color' => 'Laukam jābūt derīgai heksadecimālai krāsai.',
     'image' => 'Laukam jābūt attēlam.',
-    'in' => 'Lauka saturam jābūt 1',
+    'in' => 'Lauks satur nepareizu vērtību.
+    ',
     'in_array' => 'Lauks jābūt klātienē :other.',
     'integer' => 'Laukam jābūt veselam skaitlim.',
     'ip' => 'Laukam jābūt derīgai IP adreses formai.',

@@ -254,16 +254,14 @@ class GameController extends Controller
             $count = $player->count;
         }
 
-        $encode = [
+        return json_encode([
             'random'    => $random,
             'player'    => $player->id,
             'count'     => $count,
             'display'   => Game::action($random, $display),
             'stop'      => $stop ?? false,
             'audio'     => $audio ?? null,
-        ];
-
-        return json_encode($encode);
+        ]);
     }
 
     // Finish the game

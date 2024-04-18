@@ -1,6 +1,6 @@
 let run;
 
-// Add new player input
+// Add new player input field
 function player(text) {
     const player = $(".player_list").find(".input_player");
 
@@ -9,18 +9,18 @@ function player(text) {
         const add_player =
             '<div class="input_player">' +
                 '<input type="text" class="form-control" name="player[]">' +
-                '<span class="label label-danger pull-right" onclick="player_remove(this);">' + text + '</span>' +
+                '<span class="label label-danger pull-right remove" onclick="player_remove(this);">' + text + '</span>' +
             '</div>';
 
         $("#show_players").append(add_player);
     }
 }
 
-// Remove player input
+// Remove player input field
 function player_remove(value) {
     const player = $(".player_list").find(".input_player");
 
-    // If player inputs aren't below two, allowed to remove
+    // If player input fields aren't below two, allowed to remove
     if (player.length > 2) {
         const parent = value.parentNode;
 
@@ -81,13 +81,13 @@ function run_game() {
 
     // Countdown
     $('.random').fadeOut('slow', function(){
-        $(this).html(3).show().fadeOut('slow', function(){
-            $(this).html(2).show().fadeOut('slow', function(){
-                $(this).html(1).show().fadeOut('slow', function(){
+        // $(this).html(3).show().fadeOut('slow', function(){
+        //     $(this).html(2).show().fadeOut('slow', function(){
+        //         $(this).html(1).show().fadeOut('slow', function(){
                     set_game();
-                });
-            });
-        });
+        //         });
+        //     });
+        // });
     });
 }
 

@@ -29,11 +29,26 @@
             <label class="col-sm-3">{{ __('Icon') }}</label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="icon" value="{{ old('icon', $data->icon) }}">
-                <small>{{ __("'Font Awesome' icons are used. Example: <b>fa fa-*</b>") }}</small>
+                <small>{!! __("'Font Awesome' icons are used. Example: <b>fa fa-*</b>") !!}</small>
 
                 @if ($errors->has('icon'))
                     <span class="help-block">
                         <strong>{{ $errors->first('icon') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group{{ $errors->has('language') ? ' has-error' : '' }}">
+            <label class="col-sm-3">{{ __('Language') }}</label>
+            <div class="col-sm-9">
+                <select class="form-control" name="language">
+                    <option disabled selected>{{ __('Choose a language') }}</option>
+                    <option {{ old('language', $data->language) == 'lv' ? 'selected' : '' }} value="lv">Latviešu</option>
+                    <option {{ old('language', $data->language) == 'en' ? 'selected' : '' }} value="en">English</option>
+                </select>
+                @if ($errors->has('language'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('language') }}</strong>
                     </span>
                 @endif
             </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('icon');
+            $table->string('language');
             $table->longText('content');
             $table->integer('visible')->nullable();
             $table->foreignIdFor(User::class, 'editor')->nullable();

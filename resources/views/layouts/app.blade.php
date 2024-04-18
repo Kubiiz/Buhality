@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 	<link href="{{ asset('css/style.css?' . time()) }}" rel="stylesheet">
+    <link href="{{ asset('css/responsive.css?' . time()) }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/responsives.css?' . time()) }}" rel="stylesheet"> --}}
 	<link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -45,19 +47,21 @@
 						@if (!Auth::guest())
                             <li><a href="{{ route('newgame') }}"><i class="fa fa-plus fa-lg text-primary"></i>&nbsp; {{ __('New game') }}</a></li>
 
-                            @if (request()->is('game'))
-                                <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg text-success"></i>&nbsp; {{ __('Statistics') }}</a></li>
-                            @elseif (count(Auth::user()->game->whereNull('ended')) > 0)
+                            @if (count(Auth::user()->game->whereNull('ended')))
                                 <li><a href="{{ route('game.index') }}"><i class="fa fa-arrow-right fa-lg text-success"></i>&nbsp; {{ __('Continue') }}</a></li>
                                 <li><a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")'><i class="fa fa-stop fa-lg text-warning"></i>&nbsp; {{ __('End game') }}</a></li>
+
+                                @if (request()->is('game'))
+                                    <li><a href="javascript:;" data-toggle="modal" data-target="#stats" id="update_stats"><i class="fa fa-bar-chart fa-lg text-success"></i>&nbsp; {{ __('Statistics') }}</a></li>
+                                @endif
                             @endif
                         @endif
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <p class="navbar-text navbar-left lang">
-                            <a href="{{ route('language', 'lv') }}" class="{{ app()->isLocale('lv') ? 'active' : '' }}">{{ app()->isLocale('lv') ? '+' : '' }}LV</a>
-                            <a href="{{ route('language', 'en') }}" class="{{ app()->isLocale('en') ? 'active' : '' }}">{{ app()->isLocale('en') ? '+' : '' }}EN</a>
+                            <a href="{{ route('language', 'lv') }}"><img {{ app()->isLocale('lv') ? 'class=active' : '' }} src="{{ asset('images') }}/flag-lv.png" alt="Latviešu" /></a>
+                            <a href="{{ route('language', 'en') }}"><img {{ app()->isLocale('en') ? 'class=active' : '' }} src="{{ asset('images') }}/flag-en.png" alt="English" /></a>
                         </p>
 
                         @guest
@@ -94,11 +98,9 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        <div id="container">
             @yield('content')
-			<div id="alko" class="lang-{{ app()->getLocale() }}"></div>
-        </main>
+        </div>
     </div>
 </body>
 </html>

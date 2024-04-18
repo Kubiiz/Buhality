@@ -24,6 +24,7 @@ class InfoRequest extends FormRequest
         return [
             'title'     => 'required|min:3|max:20',
             'icon'      => 'required',
+            'language'  => 'required|in:lv,en',
             'content'   => 'required',
             'visible'   => 'in:1',
         ];

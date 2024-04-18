@@ -11,7 +11,7 @@ class Info extends Model
 
     protected $table = 'information';
 
-    protected $fillable = ['title', 'icon', 'content', 'visible', 'editor'];
+    protected $fillable = ['title', 'icon', 'language', 'content', 'visible', 'editor'];
 
     public function info()
     {

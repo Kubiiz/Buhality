@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Ieraksti nesakrīt.',
+    'failed' => 'Nepareizs epasts un/vai parole.',
     'password' => 'Parole ievadīta nepareizi.',
     'throttle' => 'Pārāk daudz pieteikšanās mēģinājumu. Lūdzu, mēģiniet vēlreiz pēc :seconds sekundēm.',
 

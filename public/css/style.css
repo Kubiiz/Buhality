@@ -1,213 +1,194 @@
-@media screen and (max-width: 1024px) {
-    .logo {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        z-index: -1;
-    }
-    .st {
-        width: 90%;
-        margin: 0 auto;
-    }
-    #pause,
-    .random {
-        font-size: 60px;
-        text-align: center;
-        margin-top: 15%;
-    }
-    .counter{
-        font-size: 25px;
-        margin: 10px 0 0 10px;
-    }
-    span.x2 {
-        font-size: 35px;
-        font-style: italic;
-    }
-	.btn-game{
-		position: absolute;
-        margin-top: 0px;
-    }
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+* {
+    margin: 0 ;
+    padding: 0;
+    box-sizing: border-box;
 }
-@media screen and (min-width: 1024px) {
-    .logo {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-    .st {
-        width: 35%;
-        margin: 0 auto;
-    }
-    #pause,
-    .random {
-        font-size: 170px;
-        text-align: center;
-        margin-top: 17%;
-        line-height: 90%;
-    }
-    .counter {
-        position: absolute;
-        top: 0;
-        font-size: 50px;
-        margin: 60px 0 0 20px;
-    }
-    span.x2 {
-        font-size: 100px;
-        font-style: italic;
-    }
-	.btn-game{
-		postion: absolute;
-		top: 0;
-		margin-top: 65px;
-    }
+
+body {
+    font-family: "Roboto", sans-serif;
+    position: relative;
+    overflow-x: hidden;
 }
+
+html {
+    font-size: 14px;
+    scroll-behavior: smooth;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.navbar {
+    width: 100vw;
+    position: fixed;
+}
+
+#container,
+#game {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#container .form {
+    width: 50vw;
+    height: 80vh;
+    padding: 10px;
+
+}
+
+.contact {
+    width: 50vw;
+    margin: 0 auto;
+}
+
+h4 {
+    padding: 15px 0;
+}
+
+.form .stats {
+   margin-right: 5px;
+}
+
+.form .panel-title {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form .title {
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.alert {
+    padding-top: 20px;
+}
+
+.form .started {
+    margin: 0 15px;
+}
+
+.form .pull-left {
+    margin-top: 4px;
+}
+
+.form .pull-right {
+    margin-top: -3px;
+}
+
+.form .back {
+    margin-right: 15px;
+}
+
+.form .add,
+.form .remove {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 7px;
+}
+
+.form .remove {
+    margin: 2px 0 7px 0;
+}
+
+.form .bomb {
+    font-size: 12px;
+}
+
 .m_logo {
     height: 43px;
     float: left;
     margin: -12px 10px 0 5px;
 }
-.buttons {
-    width: 100%;
-    text-align: center;
-}
-.buttons .col-md-6 {
-    margin: 15px 0;
-}
-.st .head {
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
-    margin: 8% 0;
-}
-.st button {
-    font-size: 15px;
-    float: right;
-}
-.st button:first-child {
-    margin-left: 5px;
-}
-.st #show_members {
-    margin: 10px 0;
-}
-.st .label {
-    font-size: 11px;
-    cursor: pointer;
-    margin: 2px 0 8px 0;
-}
-.st .add {
-    padding: 3px 6px;
-}
-.st .checkbox label {
-    margin-top: 7px;
-	float: left;
-}
-.st .forgot {
-	float: right;
-}
-.st .history {
-	padding-bottom: 50px;
-}
-.st .newbomba {
-	vertical-align: -7px;
-    color: #000;
-}
-.st .startbtn {
-    margin-top: -10px;
-}
-.st .social a {
-    margin: 0 3px;
-}
-.st .useform {
-    padding: 10px 0 10px 0;
-	font-size: 15px;
-}
-.st .right .fa {
-    margin: 1px 4px 0 0;
-}
-.st .date {
-    float: right;
-    font-size: 12px;
-    font-style: italic;
-    margin-top: 3px;
-}
-.st .warning {
-    margin-top: -4px;
-}
-.st .stats {
-    float: right;
-    margin: -50px 0px 0 0;
+
+.label {
+    padding-top: 5px;
 }
 
-.st .panel .label {
-    font-size: 12px;
-    padding: 3px 4px;
-    margin: -2px 0 0 0;
-    color: #fff;
+.lang {
+    margin: 14px 30px 15px 15px;
 }
-.st #delete {
-    float: right;
-    margin: -2px 0 0 15px;
+
+.lang img {
+    width: 25px;
+    opacity: 0.3;
+    transition: 0.3s;
 }
-.info .group {
-    padding: 3px 10px 15px 10px;
+
+.lang img:hover {
+    opacity: 1;
 }
-.info .push {
-    margin-left: 25px;
+
+.lang .active {
+    opacity: 1;
 }
-.info .justify {
-    text-align:justify;
-    text-justify:initial;
-}
-#history p {
-    margin: 10px 0;
-}
-#history s {
-    margin-left: 18px;
-}
-#history span.label {
-    font-size: 11px;
-    margin-top: 2px;
-    padding: 3px 6px 2px 6px;
-}
-.version {
+
+#game .buttons {
     position: absolute;
-    bottom: 0;
-    right: 3px;
-    font-size: 10px;
-    font-style: italic;
+    top: 0;
+    right: 0;
+    margin: 62px 15px 0 0;
 }
-.reset,
-.cont {
-    position: absolute;
-    right: 15px;
+
+#game .counter {
+    top: 0;
+    width: 30vw;
+    height: 90vh;
+    margin: 45px 0 0 15px;
+    font-size: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
 }
-.pause,
-.continue {
-    position: absolute;
-    right: 15px;
+
+#game .counter .player {
+    width: 20vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
 }
-.stats {
-    font-size: 13px;
+
+#game .center {
+    width: 70vw;
+    font-size: 140px;
+    text-align: center;
+}
+
+#game .random .x2 {
+    font-size: 100px;
+}
+
+.clear {
+    clear: both;
 }
 
 #alko {
 	position: fixed;
 	bottom: 0;
-	width: 100%;
+	width: 100vw;
 	height: 30px;
+    animation: alko 30s infinite linear;
 }
 
-#alko.lang-lv {
-	background: url('../images/alko.png') repeat-x;
-}
-
-#alko.lang-en {
-	background: url('../images/alko-en.png') repeat-x;
+@keyframes alko {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -100vw 0;
+    }
 }

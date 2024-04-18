@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="form-horizontal st info">
-<div class="form-group head">
+<div class="form-horizontal form">
+<h4 class="form-group head text-center">
     <i class="fa fa-gear fa-lg"></i>&nbsp; {{ __('Control panel') }}
-</div>
+</h4>
 <div class="form-group">
     <ul class="nav nav-tabs">
         <li class="{{ Request::route()->named('admin.index') ? 'active' : '' }}"><a href="{{ route('admin.index') }}"><i class="fa fa-bar-chart fa-lg"></i>&nbsp; {{ __('Statistics') }}</a></li>

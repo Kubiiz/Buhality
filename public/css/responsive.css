@@ -1,0 +1,100 @@
+@media screen and (max-width: 1200px) {
+    .contact {
+        width: 50vw;
+    }
+
+    #game .counter {
+        font-size: 35px;
+        margin: 50px 0 0 15px;
+    }
+
+    #game .center {
+        font-size: 100px;
+    }
+
+    #game .random .x2 {
+        font-size: 80px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    #container .logo {
+        width: 100vw;
+    }
+
+    .form {
+        min-width: 80vw;
+    }
+
+    #game .center {
+        font-size: 80px;
+    }
+
+    #game .random .x2 {
+        font-size: 60px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .contact {
+        width: 80vw;
+    }
+
+    .form .title {
+        width: 110px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #game {
+        flex-direction: column;
+    }
+
+    #game .counter {
+        height: 30vh;
+        width: 100vw;
+        font-size: 16px;
+        margin: 40px 0 0 15px;
+    }
+
+    #game .center {
+        height: 60vh;
+        width: 100vw;
+        font-size: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #game .random .x2 {
+        font-size: 30px;
+    }
+
+    #game .counter .player {
+        width: auto;
+    }
+
+    #game .buttons {
+        margin: 62px 15px 0 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .form {
+        min-width: 100vw;
+    }
+
+    .contact {
+        width: 100vw;
+        padding-right: 10px;
+    }
+
+    #game .center {
+        font-size: 40px;
+    }
+
+    #game .random .x2 {
+        font-size: 20px;
+    }
+}

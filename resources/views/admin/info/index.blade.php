@@ -16,6 +16,7 @@
             @foreach($data as $info)
                 <li class="list-group-item">
                     <i class="fa {{ $info->icon }} fa-lg text-primary text-center" style="width:15px;margin-right:5px"></i> {{ $info->title }}
+                    <span class="label label-info">{{ $info->language }}</span>
                     @if($info->visible == 1)
                         <span class="label label-success">{{ __('Public') }}</span>
                     @else

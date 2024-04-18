@@ -24,7 +24,7 @@ class GameRequest extends FormRequest
         return [
             'title'     => 'required|min:3|max:20',
             'player'    => 'required|min:2|max:10',
-            'player.*'  => 'required|min:3|max:15|distinct',
+            'player.*'  => 'required|min:3|max:12|distinct',
             'count'     => 'required|numeric|between:5,15',
             'bomb'      => 'in:1',
         ];

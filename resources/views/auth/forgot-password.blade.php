@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="form-horizontal st">
-        <div class="form-group head">
+    <div class="form-horizontal form">
+        <h4 class="form-group head text-center">
             <i class="fa fa-unlock-alt fa-lg"></i>&nbsp; {{ __('Reset Password') }}
-        </div>
+        </h4>
         <div class="card">
 
             <div class="card-body">
-                <form method="POST" action="{{ route('password.update') }}">
+                <form method="POST" action="{{ route('password.email') }}">
                     @csrf
 
-                    <div class="form-group">
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <label for="email" class="col-md-4 control-label">{{ __('Email') }}</label>
 
                         <div class="col-md-6">
@@ -19,7 +19,7 @@
                                 name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                             @error('email')
-                                <span class="invalid-feedback" role="alert">
+                                <span class="help-block" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror

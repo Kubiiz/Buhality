@@ -1,24 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="form-horizontal st">
-        <div class="form-group head history">
+    <div class="form-horizontal form">
+        <h4 class="form-group head history text-center">
             <i class="fa fa-history fa-lg"></i>&nbsp; {{ __("My games") }}
-        </div>
-        <div class="form-group stats">
+        </h4>
+        <div class="form-group text-right stats">
             <i class="fa fa-trophy"></i> {{ __("Total") }} <span class="text-primary">{{ $data->count() }}</span> spēles<br>
             <i class="fa fa-glass"></i> {!! __("<span class='text-primary'>:shots</span> shots consumed", ['shots'=> $shots]) !!}
         </div>
+        <div class="clear"></div>
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
         @if (!empty($active))
             <div class="panel panel-info">
                 <div class="panel-heading" role="tab" id="heading_open">
                     <h4 class="panel-title">
-                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_open" aria-expanded="false" aria-controls="collapse_open">
+                        <a class="collapsed title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_open" aria-expanded="false" aria-controls="collapse_open">
                             <i class="fa fa-chevron-right"></i> {{ $active->title }}
                         </a>
-                        <div class="pull-right right">
+                        <div>
                             <a href="{{ route('game.index') }}" class="label label-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
                             <a href="{{ route('game.edit', $active->id) }}" class="label label-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
                             <a href="{{ route('game.stop') }}" onclick='return confirm("{{ __("Are you sure you want to end this game?") }}")' class="label label-danger"><i class="fa fa-stop"></i>&nbsp; {{ __("End") }}</a>
@@ -50,7 +51,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading{{ $game->id }}">
                         <h4 class="panel-title">
-                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $game->id }}" aria-expanded="false" aria-controls="collapse{{ $game->id }}">
+                            <a class="collapsed title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $game->id }}" aria-expanded="false" aria-controls="collapse{{ $game->id }}">
                                 <i class="fa fa-chevron-right"></i> {{ $game->title }}
                             </a>
                             <div class="pull-right right">
@@ -71,10 +72,9 @@
                                 {{ $player->name }} - <span class="text-primary">{{ $player->shots }}</span> {{ __("shots") }}<br>
                             @endforeach
 							</div>
-							<div class="pull-right right">
+							<div class="pull-right">
 								<div>
-									<i class="fa fa-clock-o"></i>
-									<div class="date">{{ $game->created_at }}</div>
+									<i class="fa fa-clock-o"></i> {{ $game->created_at }}
 								</div>
 								<div>
 									<i class="pull-right"><i class="fa fa-glass"></i> {!! __("<span class='text-primary'>:shots</span> shots consumed", ['shots'=> $game->player()->sum('shots')]) !!}</i>
@@ -86,7 +86,7 @@
             @endforeach
         @else
         <div class="alert alert-info">
-            {{ __('You haven`t added or played any games.') }}
+            {{ __('You haven`t played any games.') }}
         </div>
         @endif
         </div>

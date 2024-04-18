@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <form class="form-horizontal st" role="form" method="POST" action="{{ route('game.update', $data->id) }}">
+    <form class="form-horizontal form" role="form" method="POST" action="{{ route('game.update', $data->id) }}">
         {{ csrf_field() }}
 
-        <div class="form-group head">
+        <h4 class="form-group head text-center">
             <i class="fa fa-pencil fa-lg"></i>&nbsp; {{ __("Edit game") }} - <i>{{ $data->title }}</i>
-            <a href="{{ url('/games') }}" class="btn btn-sm btn-primary pull-right"><i class="fa fa-history"></i> {{ __("Back") }}</a>
-        </div>
+            <a href="{{ url('/games') }}" class="btn btn-sm btn-primary pull-right back"><i class="fa fa-history"></i> {{ __("Back") }}</a>
+        </h4>
 
         @if (session('status'))
             <div class="alert alert-success">
@@ -49,7 +49,7 @@
                     <div class="{{ $errors->has('player.'.$key) ? 'has-error' : '' }}">
                         <div class="input_player">
                             <input value="{{ old('player.'.$key, $newvalue) }}" type="text" class="form-control" name="player[]">
-                            <span class="label label-danger pull-right" onclick="player_remove(this);">{{ __('Remove') }}</span>
+                            <span class="label label-danger pull-right remove" onclick="player_remove(this);">{{ __('Remove') }}</span>
                         </div>
 
                          @if ($errors->has('player.'.$key))
@@ -79,9 +79,11 @@
         <div class="form-group{{ $errors->has('bomb') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __('Bomb') }}</label>
             <div class="col-md-9">
-                <div class="checkbox">
-                    <label><input type="checkbox" name="bomb" value="1" {{ old('bomb', $data->bomb) ? 'checked' : '' }}></label>
-					<span class="newbomba"><small>{!! __('When the <i><strong>Bomb</strong></i> drops, everyone will have to drink') !!}</small></span>
+                <div>
+                    <label>
+                        <input type="checkbox" name="bomb" value="1" {{ old('bomb', $data->bomb) ? 'checked' : '' }}>
+                    </label>
+                    <span class="bomb">{!! __('When the <strong>Bomb</strong> drops, everyone will have to drink') !!}</span>
                 </div>
 
                 @if ($errors->has('bomb'))
