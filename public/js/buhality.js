@@ -33,8 +33,7 @@ function player_remove(value) {
 
 //  Run the game and waiting for the actions
 function game() {
-    $.get(base + "game/action", function (result) {
-        const data = jQuery.parseJSON(result);
+    $.getJSON(base + "game/action", function (data) {
         const display = $(".random").html(data.display).show();
         const count = data.count;
 
@@ -81,13 +80,13 @@ function run_game() {
 
     // Countdown
     $('.random').fadeOut('slow', function(){
-        // $(this).html(3).show().fadeOut('slow', function(){
-        //     $(this).html(2).show().fadeOut('slow', function(){
-        //         $(this).html(1).show().fadeOut('slow', function(){
+        $(this).html(3).show().fadeOut('slow', function(){
+            $(this).html(2).show().fadeOut('slow', function(){
+                $(this).html(1).show().fadeOut('slow', function(){
                     set_game();
-        //         });
-        //     });
-        // });
+                });
+            });
+        });
     });
 }
 

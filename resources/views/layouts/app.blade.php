@@ -20,7 +20,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 	<link href="{{ asset('css/style.css?' . time()) }}" rel="stylesheet">
     <link href="{{ asset('css/responsive.css?' . time()) }}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/responsives.css?' . time()) }}" rel="stylesheet"> --}}
 	<link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>

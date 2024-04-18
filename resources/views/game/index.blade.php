@@ -14,7 +14,7 @@
         <button onclick="reset_counter()" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> {{ __('Refresh') }}</button>
         @foreach ($members as $memb)
             <div class="memb_counter">
-                <div class="player" id="memb">{{ $memb->name }}</div> - <span class="text-primary" id="memb_{{ $memb->id }}">{{ $memb->count }}</span>
+                <div class="player" id="memb">{{ $memb->name }}</div> - <span class="text-primary shots refresh" id="memb_{{ $memb->id }}">{{ $memb->count }}</span>
             </div>
         @endforeach
     </div>

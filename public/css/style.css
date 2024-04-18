@@ -28,6 +28,7 @@ html {
 .navbar {
     width: 100vw;
     position: fixed;
+    z-index: 999;
 }
 
 #container,
@@ -43,7 +44,6 @@ html {
     width: 50vw;
     height: 80vh;
     padding: 10px;
-
 }
 
 .contact {
@@ -155,7 +155,8 @@ h4 {
 }
 
 #game .counter .player {
-    width: 20vw;
+    min-width: auto;
+    max-width: 20vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

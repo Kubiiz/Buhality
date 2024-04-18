@@ -254,7 +254,7 @@ class GameController extends Controller
             $count = $player->count;
         }
 
-        return json_encode([
+        return response()->json([
             'random'    => $random,
             'player'    => $player->id,
             'count'     => $count,

@@ -22,7 +22,7 @@
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __("Title") }}</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+                <input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
                 <small>{!! __("For example - <i>'Friday party'</i>") !!}</small>
 
                 @if ($errors->has('title'))
@@ -67,7 +67,7 @@
         <div class="form-group{{ $errors->has('count') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __('Count') }}</label>
             <div class="col-sm-9">
-                <input type="number" class="form-control" name="count" min="5" max="15" value="{{ old('count') }}">
+                <input type="number" class="form-control" name="count" min="5" max="15" value="{{ old('count') }}" required>
                 <small>{!! __('How long to count? From <b>5</b> to <b>15</b>') !!}</small>
 
                 @if ($errors->has('count'))
