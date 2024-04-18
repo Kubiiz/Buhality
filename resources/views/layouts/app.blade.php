@@ -101,6 +101,10 @@
             @yield('content')
         </div>
     </div>
-    <div id="alko" style="background: url('{{ asset('images') }}/alko-{{ app()->getLocale() }}.png')"></div>
+    <div id="alko" style="background: url('{{ asset('images') }}/alko-{{ app()->getLocale() }}.png')">
+        <div class="label close">
+            <i class="fa fa-times fa-md"></i> {{ __('Hide') }}
+        </div>
+    </div>
 </body>
 </html>

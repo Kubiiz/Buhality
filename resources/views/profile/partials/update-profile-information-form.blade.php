@@ -16,17 +16,6 @@
             </div>
         @endif
 
-        <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
-            <label class="col-sm-3">{{ __('Birth date') }}</label>
-            <div class="col-sm-9">
-                <input type="date" class="form-control" name="birth_date" value="{{ old('birth_date', $date) }}" required autofocus autocomplete="birth_date">
-                @if ($errors->has('birth_date'))
-                    <span class="help-block">
-                    <strong>{{ $errors->first('birth_date') }}</strong>
-                </span>
-                @endif
-            </div>
-        </div>
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __('Name') }}</label>
             <div class="col-sm-9">
@@ -34,6 +23,17 @@
                 @if ($errors->has('name'))
                     <span class="help-block">
                     <strong>{{ $errors->first('name') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+            <label class="col-sm-3">{{ __('Birth date') }}</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" name="birth_date" value="{{ old('birth_date', $date) }}" required autofocus autocomplete="birth_date">
+                @if ($errors->has('birth_date'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('birth_date') }}</strong>
                 </span>
                 @endif
             </div>

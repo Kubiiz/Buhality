@@ -9,7 +9,9 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-
+                    <div class="alert alert-info">
+                        {!! __('Can be registered persons who have reached the age of <b>18+</b>.') !!}
+                    </div>
                     <div class="form-group row{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name" class="col-md-4 control-label">{{ __('Name') }}</label>
 

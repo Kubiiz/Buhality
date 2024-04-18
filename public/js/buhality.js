@@ -137,9 +137,22 @@ $("#update_stats").click(function(){
     });
 });
 
-// Check if user is in /game page and start new game
+// Hide alcohol use warning in page bottom
+$("#alko .close").click(function(){
+    if (!sessionStorage.getItem("alko")) {
+        sessionStorage.setItem("alko", true);
+        $("#alko").hide();
+    }
+});
+
 $(document).ready(function () {
+    // Check if user is in /game page and start new game
     if (window.location.pathname == "/game") {
         run_game();
+    }
+
+    // Check if exists session "alko" and remove text about alcohol usage
+    if (sessionStorage.getItem("alko")) {
+        $("#alko").hide();
     }
 });

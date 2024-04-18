@@ -185,6 +185,14 @@ h4 {
     animation: alko 30s infinite linear;
 }
 
+#alko .close {
+    position: absolute;
+	right: 0;
+    bottom: 0;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
 @keyframes alko {
     0% {
       background-position: 0 0;
