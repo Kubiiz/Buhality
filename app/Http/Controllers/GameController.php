@@ -17,8 +17,9 @@ class GameController extends Controller
         $data = Auth::user()->game->whereNull('ended')->first();
 
         // If there is no active game, redirect to new-game page
-        if (empty($data))
+        if (empty($data)) {
             return redirect('new-game');
+        }
 
         $members = $data->player()->get();
 
@@ -63,8 +64,9 @@ class GameController extends Controller
         $data = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
 
         // If game not found redirect to new-game
-        if (empty($data))
+        if (empty($data)) {
             return redirect('new-game');
+        }
 
         $players = $data->player()->get();
 
@@ -95,11 +97,12 @@ class GameController extends Controller
         foreach ($request->player as $key => $value) {
             $player = Player::where('game_id', $data->id)->where('name', $value)->first();
 
-            if (!$player)
+            if (!$player) {
                 Player::create([
                     'game_id'   => $data->id,
                     'name'      => $value,
                 ]);
+            }
         }
 
         return back()->with('status', 'Spēle izlabota!');
@@ -124,8 +127,10 @@ class GameController extends Controller
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (empty($data))
+        if (empty($data)) {
             return false;
+        }
+
 
         $members = $data->player()->get();
 
@@ -137,8 +142,10 @@ class GameController extends Controller
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (empty($data))
+        if (empty($data)) {
             return false;
+        }
+
 
         $data->player()->update(['count' => 0]);
 
@@ -150,8 +157,10 @@ class GameController extends Controller
     {
         $data = Auth::user()->game->whereNull('ended')->first();
 
-        if (empty($data))
+        if (empty($data)) {
             return false;
+        }
+
 
         // Get a random action and player
         $random = Game::random($data->bomb);
@@ -277,8 +286,9 @@ class GameController extends Controller
     {
         $exists = Game::where('user_id', Auth::user()->id)->whereNull('ended')->exists();
 
-        if (!$exists)
+        if (!$exists) {
             Game::where(['id' => $id])->update(['ended' => null]);
+        }
 
         return redirect('game');
     }

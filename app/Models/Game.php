@@ -50,14 +50,15 @@ class Game extends Model
     // Get a random action and display it
     public static function action(string $random, array $players = null) :string
     {
-        if ($random == 'noone')
+        if ($random == 'noone') {
             return __('Noone');
-        elseif ($random == 'bomb')
+        } elseif ($random == 'bomb') {
             return __('BOMB') . '<br /><span class="x2 text-primary">' . __('Everybody drink!') . '</span>';
-        elseif ($random == 'drink')
+        } elseif ($random == 'drink') {
             return "<span class='x2 text-primary'>" . __('Drink') . "</span> " . implode(', ', $players);
-        else
+        } else {
             return ($random == 'inc_all' ? __('Everybody') : $players[0]) . " <span class='x2 text-" . ($random == 'dec_one' ? "success plus'>-" : "danger plus'>+") . ($random == 'inc_two' ? 2 : 1) . "</span>";
+        }
     }
 
     public function user()
