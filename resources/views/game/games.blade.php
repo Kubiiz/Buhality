@@ -54,14 +54,18 @@
                             <a class="collapsed title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $game->id }}" aria-expanded="false" aria-controls="collapse{{ $game->id }}">
                                 <i class="fa fa-chevron-right"></i> {{ $game->title }}
                             </a>
-                            <div class="pull-right right">
-                            @if (empty($active))
-                                <a href="{{ route('game.continue', $game->id) }}" class="label label-success"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
-                            @endif
-                            <a href="{{ route('game.edit', $game->id) }}" class="label label-warning"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
-                            <a href="{{ route('game.destroy', $game->id) }}" onclick='return confirm("{{ __("Are you sure you want to delete this game?") }}")' class="label label-default">
-                                <i class="fa fa-times"></i> {{ __("Delete") }}
-                            </a>
+                            <div class="pull-right right game-btns">
+                                @if (empty($active))
+                                    <a href="{{ route('game.continue', $game->id) }}" class="label label-success info-edit"><i class="fa fa-play"></i> {{ __("Continue") }}</a>
+                                @endif
+                                <a href="{{ route('game.edit', $game->id) }}" class="label label-warning info-edit"><i class="fa fa-pencil"></i> {{ __("Edit") }}</a>
+                                <form class="pull-right" method="POST" action="{{ route('game.destroy', $game->id) }}">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" onclick='return confirm("{{ __("Are you sure you want to delete this game?") }}")' class="btn btn-xs btn-danger game-delete">
+                                        <i class="fa fa-times"></i> {{ __('Delete') }}
+                                    </button>
+                                </form>
                             </div>
                         </h4>
                     </div>

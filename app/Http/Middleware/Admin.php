@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Auth;
 
 class Admin
 {
@@ -16,7 +15,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->group == 1) {
+        if ($request->user() && $request->user()->group == 1) {
             return $next($request);
         }
 

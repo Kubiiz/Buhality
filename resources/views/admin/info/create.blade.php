@@ -74,7 +74,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                <button type="submit" name="st" class="btn btn-success"><i class="fa fa-check"></i> {{ __('Add') }}</button>
+                <button type="submit" name="st" class="btn btn-success pull-right"><i class="fa fa-check"></i> {{ __('Add') }}</button>
             </div>
         </div>
     </form>

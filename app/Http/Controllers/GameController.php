@@ -38,14 +38,10 @@ class GameController extends Controller
     public function store(GameRequest $request)
     {
         // Complete previous game if exists
-        Game::where('user_id', Auth::user()->id)->update(['ended' => 1]);
+        Game::where('user_id', $request->user()->id)->update(['ended' => 1]);
 
         // Create new game
-        $create = Auth::user()->game()->create([
-            'title' => $request->title,
-            'count' => $request->count,
-            'bomb'  => $request->bomb,
-        ]);
+        $create = $request->user()->game()->create($request->all());
 
         // Add game players
         foreach ($request->player as $key => $value) {
@@ -59,47 +55,39 @@ class GameController extends Controller
     }
 
     // Show Edit game view
-    public function edit($id)
+    public function edit(Game $game)
     {
-        $data = Game::where('id', $id)->where('user_id', Auth::user()->id)->first();
-
-        // If game not found redirect to new-game
-        if (empty($data)) {
+        if ($game->user_id != Auth::user()->id) {
             return redirect('new-game');
         }
 
-        $players = $data->player()->get();
+        $players = $game->player()->get();
 
-        return view('game.edit', compact('data', 'players'));
+        return view('game.edit', compact('game', 'players'));
     }
 
     // Update game
-    public function update(GameRequest $request)
+    public function update(Game $game, GameRequest $request)
     {
-        $data = Game::findOrFail($request->id);
-
-        // If game not found redirect back
-        if ($data->user_id != Auth::user()->id) {
+        if ($game->user_id != Auth::user()->id) {
             return back();
         }
 
         // Update game
-        $data->update([
-            'title'     => $request->title,
-            'count'     => $request->count,
-            'bomb'      => $request->bomb,
-        ]);
+        $game->update($request->merge([
+            'bomb' => $request->bomb ?? null,
+        ])->toArray());
 
         // Delete game players if not exists anymore
-        Player::where('game_id', $data->id)->whereNotIn('name', $request->player)->delete();
+        Player::where('game_id', $game->id)->whereNotIn('name', $request->player)->delete();
 
         // Create new game players if is added new
         foreach ($request->player as $key => $value) {
-            $player = Player::where('game_id', $data->id)->where('name', $value)->first();
+            $player = Player::where('game_id', $game->id)->where('name', $value)->first();
 
             if (!$player) {
                 Player::create([
-                    'game_id'   => $data->id,
+                    'game_id'   => $game->id,
                     'name'      => $value,
                 ]);
             }
@@ -281,24 +269,23 @@ class GameController extends Controller
         return back();
     }
 
-    // Continue game
-    public function continue($id)
+    // Check if game isn't finished and continue it
+    public function continue(Game $game)
     {
-        $exists = Game::where('user_id', Auth::user()->id)->whereNull('ended')->exists();
-
-        if (!$exists) {
-            Game::where(['id' => $id])->update(['ended' => null]);
+        if ($game->user_id == Auth::user()->id && $game->ended == 1) {
+            $game->update(['ended' => null]);
         }
 
         return redirect('game');
     }
 
     // Delete game and game players
-    public function destroy($id)
+    public function destroy(Game $game)
     {
-        $data = Game::where(['user_id'=> Auth::user()->id, 'id' => $id])->firstOrFail();
-        $data->delete();
-        $data->player()->delete();
+        if ($game->user_id == Auth::user()->id) {
+            $game->player()->delete();
+            $game->delete();
+        }
 
         return redirect()->back()->with('deleted', __('Game deleted!'));
     }

@@ -24,10 +24,10 @@ Route::middleware('auth')->group(function () {
         Route::get('stats', [GameController::class, 'stats'])->name('stats');
         Route::get('reset', [GameController::class, 'reset'])->name('reset');
         Route::get('stop', [GameController::class, 'stop'])->name('stop');
-        Route::get('{id}/continue', [GameController::class, 'continue'])->name('continue');
-        Route::get('{id}/edit', [GameController::class, 'edit'])->name('edit');
-        Route::post('{id}/edit', [GameController::class, 'update'])->name('update');
-        Route::get('{id}/delete', [GameController::class, 'destroy'])->name('destroy');
+        Route::get('{game}/continue', [GameController::class, 'continue'])->name('continue');
+        Route::get('{game}/edit', [GameController::class, 'edit'])->name('edit');
+        Route::patch('{game}', [GameController::class, 'update'])->name('update');
+        Route::delete('{game}', [GameController::class, 'destroy'])->name('destroy');
     });
 
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,9 +39,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group( function () 
     Route::get('info', [AdminController::class, 'info'])->name('info');
     Route::get('info/create', [AdminController::class, 'create'])->name('info.create');
     Route::post('info/create', [AdminController::class, 'store'])->name('info.store');
-    Route::get('{id}/edit', [AdminController::class, 'edit'])->name('info.edit');
-    Route::post('{id}/edit', [AdminController::class, 'update'])->name('info.update');
-    Route::get('{id}/delete', [AdminController::class, 'destroy'])->name('info.destroy');
+    Route::get('{info}/edit', [AdminController::class, 'edit'])->name('info.edit');
+    Route::patch('{info}', [AdminController::class, 'update'])->name('info.update');
+    Route::delete('{info}', [AdminController::class, 'destroy'])->name('info.destroy');
 });
 
 Route::get('/lang/{locale}', function (string $locale) {

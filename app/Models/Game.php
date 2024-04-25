@@ -10,7 +10,7 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'count', 'bomb', 'active'];
+    protected $fillable = ['title', 'count', 'bomb', 'ended'];
 
     /**
      * Show a random action based on the percentage

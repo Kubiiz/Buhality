@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <form class="form-horizontal form" role="form" method="POST" action="{{ route('game.update', $data->id) }}">
+    <form class="form-horizontal form" role="form" method="POST" action="{{ route('game.update', $game->id) }}">
+        @method('patch')
         {{ csrf_field() }}
 
         <h4 class="form-group head text-center">
-            <i class="fa fa-pencil fa-lg"></i>&nbsp; {{ __("Edit game") }} - <i>{{ $data->title }}</i>
+            <i class="fa fa-pencil fa-lg"></i>&nbsp; {{ __("Edit game") }} - <i>{{ $game->title }}</i>
             <a href="{{ url('/games') }}" class="btn btn-sm btn-primary pull-right back"><i class="fa fa-history"></i> {{ __("Back") }}</a>
         </h4>
 
@@ -22,7 +23,7 @@
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __("Title") }}</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="title" value="{{ old('title', $data->title) }}">
+                <input type="text" class="form-control" name="title" value="{{ old('title', $game->title) }}">
                 @if ($errors->has('title'))
                     <span class="help-block">
                     <strong>{{ $errors->first('title') }}</strong>
@@ -66,7 +67,7 @@
         <div class="form-group{{ $errors->has('count') ? ' has-error' : '' }}">
             <label class="col-sm-3">{{ __('Count') }}</label>
             <div class="col-sm-9">
-                <input type="number" class="form-control" name="count" min="5" max="15" value="{{ old('count', $data->count) }}">
+                <input type="number" class="form-control" name="count" min="5" max="15" value="{{ old('count', $game->count) }}">
                 <small>{!! __('How long to count? From <b>5</b> to <b>15</b>') !!}</small>
 
                 @if ($errors->has('count'))
@@ -81,7 +82,7 @@
             <div class="col-md-9">
                 <div>
                     <label>
-                        <input type="checkbox" name="bomb" value="1" {{ old('bomb', $data->bomb) ? 'checked' : '' }}>
+                        <input type="checkbox" name="bomb" value="1" {{ old('bomb', $game->bomb) ? 'checked' : '' }}>
                     </label>
                     <span class="bomb">{!! __('When the <strong>Bomb</strong> drops, everyone will have to drink') !!}</span>
                 </div>

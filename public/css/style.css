@@ -178,6 +178,23 @@ h4 {
     font-size: 90px;
 }
 
+.game-btns {
+    padding-top: 10px;
+}
+
+.info-edit {
+    margin-top: 2px;
+    font-weight: 400;
+}
+
+.info-delete {
+    margin: 5px 0 0 3px;
+}
+
+.game-delete {
+    margin: 2px 0 0 4px;
+}
+
 .clear {
     clear: both;
 }

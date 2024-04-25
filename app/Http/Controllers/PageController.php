@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MailRequest;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
@@ -28,14 +29,8 @@ class PageController extends Controller
         return view('info', compact('data'));
     }
 
-	public function contact(Request $request)
+	public function contact(MailRequest $request)
 	{
-        $request->validate([
-            'name'      => 'required|min:3',
-            'email'     => 'required|email',
-            'comment'   => 'required|min:15'
-        ]);
-
         Mail::send('email', [
             'name'      => $request->get('name'),
             'email'     => $request->get('email'),

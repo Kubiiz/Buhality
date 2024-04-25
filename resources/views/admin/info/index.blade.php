@@ -23,8 +23,14 @@
                         <span class="label label-default">{{ __('Hidden') }}</span>
                     @endif
                     <div class="pull-right">
-                        <a href="{{ route('admin.info.edit', $info->id) }}" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> {{ __('Edit') }}</a>
-                        <a href="{{ route('admin.info.destroy', $info->id) }}" onclick='return confirm("{{ __("Are you sure to delete information section?") }}")' class="btn btn-xs btn-danger"><i class="fa fa-pencil"></i> {{ __('Delete') }}</a>
+                        <a href="{{ route('admin.info.edit', $info->id) }}" class="btn btn-xs btn-warning info-edit"><i class="fa fa-pencil"></i> {{ __('Edit') }}</a>
+                        <form class="pull-right" method="POST" action="{{ route('admin.info.destroy', $info->id) }}">
+                            @method('delete')
+                            @csrf
+                            <button type="submit" onclick='return confirm("{{ __("Are you sure to delete information section?") }}")' class="btn btn-xs btn-danger info-delete">
+                                <i class="fa fa-times"></i> {{ __('Delete') }}
+                            </button>
+                        </form>
                     </div>
                 </li>
             @endforeach

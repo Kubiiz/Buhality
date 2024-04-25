@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Game;
 use App\Models\Player;
 use App\Models\Info;
-use Auth;
 
 class AdminController extends Controller
 {
@@ -41,47 +40,32 @@ class AdminController extends Controller
     // Create Information page
     public function store(InfoRequest $request)
     {
-        Info::create([
-            'title'     => $request->title,
-            'icon'      => $request->icon,
-            'language'  => $request->language,
-            'content'   => $request->content,
-            'visible'   => $request->visible
-        ]);
+        Info::create($request->all());
 
         return redirect('/admin/info');
     }
 
     // Show Information page
-    public function edit($id)
+    public function edit(Info $info)
     {
-        $data = Info::where(['id' => $id])->firstOrFail();
-
-        return view('admin.info.edit', compact('data'));
+        return view('admin.info.edit', compact('info'));
     }
 
     // Edit Information page
-    public function update(InfoRequest $request)
+    public function update(Info $info, InfoRequest $request)
     {
-        $data = Info::findOrFail($request->id);
-
-        $data->update([
-            'title'     => $request->title,
-            'icon'      => $request->icon,
-            'language'  => $request->language,
-            'content'   => $request->content,
-            'visible'   => $request->visible,
-            'editor'    => Auth::user()->id,
-        ]);
+        $info->update($request->merge([
+            'visible' => $request->visible ?? null,
+            'editor' => $request->user()->id
+        ])->toArray());
 
         return back()->with('status', __('Information section updated!'));
     }
 
     // Delete Information page
-    public function destroy($id)
+    public function destroy(Info $info)
     {
-        $data = Info::where(['id' => $id])->firstOrFail();
-        $data->delete();
+        $info->delete();
 
         return redirect()->back()->with('deleted', __('Information section deleted!'));
     }
