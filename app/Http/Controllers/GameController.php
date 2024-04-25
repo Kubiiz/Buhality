@@ -41,12 +41,11 @@ class GameController extends Controller
         Game::where('user_id', $request->user()->id)->update(['ended' => 1]);
 
         // Create new game
-        $create = $request->user()->game()->create($request->all());
+        $game = $request->user()->game()->create($request->all());
 
         // Add game players
         foreach ($request->player as $key => $value) {
-            Player::create([
-                'game_id'   => $create->id,
+            $game->player()->create([
                 'name'      => $value,
             ]);
         }
@@ -79,15 +78,14 @@ class GameController extends Controller
         ])->toArray());
 
         // Delete game players if not exists anymore
-        Player::where('game_id', $game->id)->whereNotIn('name', $request->player)->delete();
+        $game->player()->whereNotIn('name', $request->player)->delete();
 
-        // Create new game players if is added new
+        // Create new game players if is edited or added new
         foreach ($request->player as $key => $value) {
-            $player = Player::where('game_id', $game->id)->where('name', $value)->first();
+            $player = $game->player()->where('name', $value)->first();
 
             if (!$player) {
-                Player::create([
-                    'game_id'   => $game->id,
+                $game->player()->create([
                     'name'      => $value,
                 ]);
             }
