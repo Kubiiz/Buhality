@@ -45,7 +45,7 @@ class GameTest extends TestCase
         $response->assertJson(fn ($json) =>
             $json->whereType('random', 'string')
                 ->whereType('player', 'integer')
-                ->whereType('count', 'integer|array')
+                ->whereType('count', 'array')
                 ->whereType('display', 'string')
                 ->whereType('stop', 'boolean|null')
                 ->whereType('audio', 'string|null')

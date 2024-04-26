@@ -52,13 +52,9 @@ function game() {
         }
 
         // Update player count
-        if (Array.isArray(data.count)) {
-            count.forEach((e) => {
-                $("#memb_" + e.id).text(e.count);
-            });
-        } else {
-           $("#memb_" + data.player).text(data.count);
-        }
+        count.forEach((e) => {
+            $("#memb_" + e.id).text(e.count);
+        });
     });
 }
 
@@ -147,7 +143,7 @@ $("#alko .close").click(function(){
 
 $(document).ready(function () {
     // Check if user is in /game page and start new game
-    if (window.location.pathname == "/game") {
+    if (window.location.pathname == "/game" || window.location.pathname == "/game/") {
         run_game();
     }
 

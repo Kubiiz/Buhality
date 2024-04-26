@@ -42,7 +42,7 @@ class AdminController extends Controller
     {
         Info::create($request->all());
 
-        return redirect('/admin/info');
+        return redirect(route('admin.info'));
     }
 
     // Show Information page

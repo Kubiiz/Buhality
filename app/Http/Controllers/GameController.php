@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Player;
 use Illuminate\Validation\Rule;
+use App\Classes\Action;
 use Auth;
 
 class GameController extends Controller
@@ -132,7 +133,6 @@ class GameController extends Controller
             return false;
         }
 
-
         $data->player()->update(['count' => 0]);
 
         return true;
@@ -141,122 +141,9 @@ class GameController extends Controller
     // Play the game. Get a random action and do something
     public function action()
     {
-        $data = Auth::user()->game->whereNull('ended')->first();
+        $game = new Action();
 
-        if (empty($data)) {
-            return false;
-        }
-
-
-        // Get a random action and player
-        $random = Game::random($data->bomb);
-        $player = $data->player()->get()->random();
-        $display = [];
-
-        // Check if player count will be increased
-        if ($random == 'inc_one' || $random == 'inc_two') {
-            $inc = $random == 'inc_two' ? 2 : 1;
-            $display[] = $player->name;
-
-            if ($player->count + $inc >= $data->count) {
-                $count = $data->count;
-                $stop = true;
-                $audio = 'drink';
-                $random = $audio;
-
-                $player->increment('shots');
-                $data->player()->update(['count' => 0]);
-            } else {
-                $count = $player->count + $inc;
-
-                $player->increment('count', $inc);
-            }
-        }
-        // Check if all players counts will be increased
-        else if ($random == 'inc_all') {
-            foreach ($data->player as $players) {
-                if ($players->count + 1 >= $data->count) {
-                    $stop = true;
-                    $audio = 'drink';
-                    $random = $audio;
-                    $display[] = $players->name;
-                    $count[] = [
-                        'id'    => $players->id,
-                        'count' => $data->count,
-                    ];
-
-                    $players->increment('shots');
-                    $data->player()->update(['count' => 0]);
-                } else {
-                    $count[] = [
-                        'id'    => $players->id,
-                        'count' => $players->count + 1,
-                    ];
-
-                    $players->increment('count');
-                }
-            }
-        }
-        // Check if player count will be decreased
-        else if ($random == 'dec_one') {
-            $display[] = $player->name;
-
-            if ($player->count <= 0) {
-                $random = 'inc_one';
-
-                if ($player->count + 1 >= $data->count) {
-                    $count = $data->count;
-                    $stop = true;
-                    $audio = 'drink';
-                    $random = $audio;
-
-                    $player->increment('shots');
-                    $data->player()->update(['count' => 0]);
-                } else {
-                    $count = $player->count + 1;
-
-                    $player->increment('count');
-                }
-            } else {
-                $count = $player->count - 1;
-
-                $player->decrement('count');
-            }
-        }
-        // Check for bomb (all players need to drink a shot)
-        else if ($random == 'bomb') {
-            if ($data->bomb == 1) {
-                foreach ($data->player as $players) {
-                    $count[] = [
-                        'id'    => $players->id,
-                        'count' => $data->count,
-                    ];
-
-                    $players->increment('shots');
-                }
-
-                $data->player()->update(['count' => 0]);
-
-                $stop = true;
-                $audio = 'bomb';
-            } else {
-                $random = 'noone';
-                $count = $player->count;
-            }
-        }
-        // Nothing is happening
-        else if ($random == 'noone') {
-            $count = $player->count;
-        }
-
-        return response()->json([
-            'random'    => $random,
-            'player'    => $player->id,
-            'count'     => $count,
-            'display'   => Game::action($random, $display),
-            'stop'      => $stop ?? false,
-            'audio'     => $audio ?? null,
-        ]);
+        return $game->show();
     }
 
     // Finish the game
